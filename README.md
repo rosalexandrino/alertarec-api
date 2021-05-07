@@ -19,11 +19,14 @@ O projeto Alerta Recife tem como objetivo a criação de um aplicativo móvel An
 <span id="techs"></span>
 ## **Tecnologias**
 
+
 <span id="install"></span>
 ## **Instalação**
 
+
 <span id="guide"></span>
 ## **Como usar**
+
 
 <span id="author"></span>
 ## **Autor**
