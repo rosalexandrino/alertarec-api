@@ -1,7 +1,6 @@
 package service;
 
 
-import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -19,8 +18,7 @@ import dto.UsuarioCadastroDTO;
 @Path("/usuario")
 public class UsuarioService {
 
-	@EJB
-	private UsuarioBean usuarioBean;
+	private UsuarioBean usuarioBean = new UsuarioBean();
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)

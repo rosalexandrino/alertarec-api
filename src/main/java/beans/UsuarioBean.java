@@ -4,8 +4,6 @@ package beans;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
@@ -20,11 +18,9 @@ import util.Authentication;
 import util.ResponseMessage;
 import util.ResponseMessage.ResponseStatus;
 
-@Stateless
 public class UsuarioBean {
 
-	@EJB
-	private UsuarioPersistencia usuarioPersistencia;
+	private UsuarioPersistencia usuarioPersistencia = new UsuarioPersistencia();
 
 	public Response cadastrarUsuario(UsuarioCadastroDTO usuarioCadastroDTO) {
 		try {

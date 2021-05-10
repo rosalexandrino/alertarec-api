@@ -2,20 +2,31 @@ package persistence;
 
 
 import java.util.List;
-import javax.ejb.Stateless;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import model.Usuario;
 
-@Stateless
 public class UsuarioPersistencia extends EntidadePersistencia<Usuario> {
 
+	private final EntityManagerFactory entityManagerFactory;
+	 
+	private final EntityManager entityManager;
+	
+	public UsuarioPersistencia(){
+		this.entityManagerFactory = Persistence.createEntityManagerFactory("AlertaRecifeApi");
+		this.entityManager = this.entityManagerFactory.createEntityManager();
+	}
+	
 	@Override
 	public void salvar(Usuario usuario) throws PersistenceException {
 		if (selecionaPorEmail(usuario.getEmail()) != null) {
 			throw new PersistenceException("Usuário inválido");
 		}
-		this.entityManager.persist(usuario);
+		entityManager.persist(usuario);
 	}
 
 	@Override
@@ -23,24 +34,24 @@ public class UsuarioPersistencia extends EntidadePersistencia<Usuario> {
 		if (!this.entityManager.contains(usuario)) {
 			usuario = this.entityManager.merge(usuario);
 		}
-		this.entityManager.remove(usuario);
-		this.entityManager.flush();
+		entityManager.remove(usuario);
+		entityManager.flush();
 	}
 
 	@Override
 	public void atualizar(Usuario usuario) {
-		this.entityManager.merge(usuario);
-		this.entityManager.flush();
+		entityManager.merge(usuario);
+		entityManager.flush();
 	}
 
 	@Override
 	public Usuario selecionaPorId(Long id) {
-		return this.entityManager.find(Usuario.class, id);
+		return entityManager.find(Usuario.class, id);
 	}
 
 	@Override
 	public List<Usuario> selecionaTodos() {
-		TypedQuery<Usuario> typedQuery = this.entityManager.createNamedQuery("Usuario.selecionaTodos", Usuario.class);
+		TypedQuery<Usuario> typedQuery = entityManager.createNamedQuery("Usuario.selecionaTodos", Usuario.class);
 		return typedQuery.getResultList();
 	}
 
