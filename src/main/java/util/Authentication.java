@@ -1,0 +1,17 @@
+package util;
+
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import javax.xml.bind.DatatypeConverter;
+
+public final class Authentication {
+	
+	public static String encodeSHA256(String password) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+		MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+		messageDigest.update(password.getBytes("UTF-8"));
+		byte[] digest = messageDigest.digest();
+		return DatatypeConverter.printBase64Binary(digest).toString();
+	}
+}
