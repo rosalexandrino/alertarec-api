@@ -1,22 +1,28 @@
-package dto;
+package http;
 
-public class UsuarioDTO {
-	
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+public class UsuarioHttp {
+
 	private Long id;
 
 	private String email;
+
+	private String senha;
 
 	private String nome;
 
 	private String telefone;
 
-
-	public UsuarioDTO() {
+	public UsuarioHttp() {
 	}
 
-	public UsuarioDTO(Long id, String email, String nome, String telefone) {
+	public UsuarioHttp(Long id, String email, String senha, String nome, String telefone) {
+		super();
 		this.id = id;
 		this.email = email;
+		this.senha = senha;
 		this.nome = nome;
 		this.telefone = telefone;
 	}
@@ -37,6 +43,14 @@ public class UsuarioDTO {
 		this.email = email;
 	}
 
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
 	public String getNome() {
 		return nome;
 	}
@@ -52,4 +66,5 @@ public class UsuarioDTO {
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
+
 }

@@ -1,0 +1,131 @@
+package controller;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import entity.Usuario;
+import http.UsuarioHttp;
+import repository.UsuarioRepository;
+import util.Authentication;
+
+@Path("/usuario")
+public class UsuarioController {
+
+	private final UsuarioRepository repository = new UsuarioRepository();
+
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String Cadastrar(UsuarioHttp usuarioHttp) {
+
+		Usuario usuario = new Usuario();
+
+		try {
+			
+			if(usuarioHttp.getSenha() != null) {
+				usuarioHttp.setSenha(Authentication.encodeSHA256(usuarioHttp.getSenha()));
+			}
+
+			usuario.setEmail(usuarioHttp.getEmail());
+			usuario.setNome(usuarioHttp.getNome());
+			usuario.setSenha(usuarioHttp.getSenha());
+			usuario.setTelefone(usuarioHttp.getTelefone());
+
+			repository.Salvar(usuario);
+
+			return "Registro cadastrado com sucesso!";
+
+		} catch (Exception e) {
+
+			return "Erro ao cadastrar um registro " + e.getMessage();
+
+		}
+
+	}
+
+	@PUT
+	@Produces("application/json; charset=UTF-8")
+	@Consumes("application/json; charset=UTF-8")
+	public String Alterar(UsuarioHttp usuarioHttp) {
+
+		Usuario usuario = new Usuario();
+
+		try {
+
+			usuario.setNome(usuarioHttp.getNome());
+			usuario.setSenha(usuarioHttp.getSenha());
+			usuario.setTelefone(usuarioHttp.getTelefone());
+
+			repository.Alterar(usuario);
+
+			return "Registro alterado com sucesso!";
+
+		} catch (Exception e) {
+
+			return "Erro ao alterar o registro " + e.getMessage();
+
+		}
+
+	}
+
+	@GET
+	@Produces("application/json; charset=UTF-8")
+	@Path("/todos")
+	public List<UsuarioHttp> selecionarTodos() {
+
+		List<UsuarioHttp> usuariosHttp = new ArrayList<UsuarioHttp>();
+
+		List<Usuario> usuarios = repository.selecionarTodos();
+
+		for (Usuario usuario : usuarios) {
+
+			usuariosHttp.add(new UsuarioHttp(usuario.getId(), usuario.getEmail(), usuario.getSenha(), usuario.getNome(),
+					usuario.getTelefone()));
+		}
+
+		return usuariosHttp;
+	}
+
+	@GET
+	@Produces("application/json; charset=UTF-8")
+	@Path("/email/{email}")
+	public UsuarioHttp GetPessoa(@PathParam("email") String email) {
+
+		Usuario usuario = repository.selecionarPorEmail(email);
+
+		if (usuario != null) {
+			return new UsuarioHttp(usuario.getId(), usuario.getEmail(), usuario.getSenha(), usuario.getNome(),
+					usuario.getTelefone());
+		}
+		return null;
+	}
+
+
+	@DELETE
+	@Produces("application/json; charset=UTF-8")
+	@Path("/{id}")
+	public String Excluir(@PathParam("id") Long id) {
+
+		try {
+
+			repository.Excluir(id);
+
+			return "Registro excluido com sucesso!";
+
+		} catch (Exception e) {
+
+			return "Erro ao excluir o registro! " + e.getMessage();
+		}
+
+	}
+
+}
