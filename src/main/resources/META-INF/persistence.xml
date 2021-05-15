@@ -7,7 +7,10 @@
 	<persistence-unit name="AlertaRecifeApi"
 		transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<class>entity.TipoPontoDeApoio</class>
+		<class>entity.TipoSolicitacao</class>
 		<class>entity.Contato</class>
+		<class>entity.TipoPontoDeRisco</class>
 		<class>entity.Usuario</class>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
@@ -25,4 +28,5 @@
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 		</properties>
 	</persistence-unit>
+	
 </persistence>

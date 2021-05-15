@@ -36,7 +36,7 @@ public class Usuario {
 	@Column(name = "nome")
 	private String nome;
 
-	@Pattern(regexp = "[0-9]{11}", message = "{usuario.telefone.invalido}")
+	@Pattern(regexp = "[0-9]+$", message = "{usuario.telefone.invalido}")
 	@NotNull(message = "{usuario.telefone.vazio}")
 	@Column(name = "telefone")
 	private String telefone;
