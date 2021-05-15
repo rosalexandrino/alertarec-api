@@ -53,14 +53,15 @@ public class UsuarioController {
 	}
 
 	@PUT
-	@Produces("application/json; charset=UTF-8")
-	@Consumes("application/json; charset=UTF-8")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
 	public String Alterar(UsuarioHttp usuarioHttp) {
 
 		Usuario usuario = new Usuario();
 
 		try {
-
+			
+			usuario.setId(usuarioHttp.getId());
 			usuario.setNome(usuarioHttp.getNome());
 			usuario.setSenha(usuarioHttp.getSenha());
 			usuario.setTelefone(usuarioHttp.getTelefone());
@@ -78,7 +79,7 @@ public class UsuarioController {
 	}
 
 	@GET
-	@Produces("application/json; charset=UTF-8")
+	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/todos")
 	public List<UsuarioHttp> selecionarTodos() {
 
@@ -93,10 +94,11 @@ public class UsuarioController {
 		}
 
 		return usuariosHttp;
+
 	}
 
 	@GET
-	@Produces("application/json; charset=UTF-8")
+	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/email/{email}")
 	public UsuarioHttp GetPessoa(@PathParam("email") String email) {
 
@@ -108,10 +110,24 @@ public class UsuarioController {
 		}
 		return null;
 	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/id/{id}")
+	public UsuarioHttp GetPessoaPorId(@PathParam("id") Long id) {
+
+		Usuario usuario = repository.selecionarPorId(id);
+
+		if (usuario != null) {
+			return new UsuarioHttp(usuario.getId(), usuario.getEmail(), usuario.getSenha(), usuario.getNome(),
+					usuario.getTelefone());
+		}
+		return null;
+	}
 
 
 	@DELETE
-	@Produces("application/json; charset=UTF-8")
+	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
 	public String Excluir(@PathParam("id") Long id) {
 
