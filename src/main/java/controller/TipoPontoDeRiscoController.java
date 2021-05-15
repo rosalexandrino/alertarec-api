@@ -89,7 +89,7 @@ public class TipoPontoDeRiscoController {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/id/{id}")
-	public TipoPontoDeRiscoHttp GetContatoPorId(@PathParam("id") Long id) {
+	public TipoPontoDeRiscoHttp GetTipoPontoDeRiscoPorId(@PathParam("id") Long id) {
 
 		TipoPontoDeRisco tipo = repository.selecionarPorId(id);
 

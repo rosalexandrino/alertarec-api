@@ -6,14 +6,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ContatoHttp {
 
 	private Long id;
-	
+
 	private String descricao;
 
 	private String telefone;
 
 	public ContatoHttp() {
 	}
-	
+
 	public ContatoHttp(Long id, String descricao, String telefone) {
 		super();
 		this.id = id;
@@ -44,7 +44,4 @@ public class ContatoHttp {
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
-	
-	
-
 }
