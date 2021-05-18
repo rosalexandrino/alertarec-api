@@ -15,30 +15,30 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "pontos_risco")
-@NamedQueries(value = { @NamedQuery(name = "PontoDeRisco.selecionarTodos", query = "SELECT p FROM PontoDeRisco p"),
-		@NamedQuery(name = "PontoDeRisco.selecionarPorTipo", query = "SELECT p FROM PontoDeRisco p WHERE p.tipoDeRisco IN (SELECT t FROM TipoPontoDeRisco t WHERE t.id = :tipo)"),
-		@NamedQuery(name = "PontoDeRisco.selecionarPorUsuario", query = "SELECT p FROM PontoDeRisco p WHERE p.usuario IN (SELECT u FROM Usuario u WHERE u.id = :id)") })
-public class PontoDeRisco{
+@Table(name = "pontos_apoio")
+@NamedQueries(value = { @NamedQuery(name = "PontoDeApoio.selecionarTodos", query = "SELECT p FROM PontoDeApoio p"),
+		@NamedQuery(name = "PontoDeApoio.selecionarPorTipo", query = "SELECT p FROM PontoDeApoio p WHERE p.tipoDeApoio IN (SELECT t FROM TipoPontoDeApoio t WHERE t.id = :tipo)"),
+		@NamedQuery(name = "PontoDeApoio.selecionarPorUsuario", query = "SELECT p FROM PontoDeApoio p WHERE p.usuario IN (SELECT u FROM Usuario u WHERE u.id = :id)") })
+public class PontoDeApoio{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
 
-	@NotBlank(message = "{pontoDeRisco.longitude.vazio}")
+	@NotBlank(message = "{pontoDeApoio.longitude.vazio}")
 	@Column(name = "longitude")
 	private double longitude;
 
-	@NotBlank(message = "{pontoDeRisco.latitude.vazio}")
+	@NotBlank(message = "{pontoDeApoio.latitude.vazio}")
 	@Column(name = "latitude")
 	private double latitude;
 
 	@Valid
-	@NotBlank(message = "{pontoDeRisco.tipo.vazio}")
+	@NotBlank(message = "{pontoDeApoio.tipo.vazio}")
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "tipo_risco")
-	private TipoPontoDeRisco tipoDeRisco;
+	@JoinColumn(name = "tipo_apoio")
+	private TipoPontoDeApoio tipoDeApoio;
 
 	@Valid
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -69,12 +69,12 @@ public class PontoDeRisco{
 		this.latitude = latitude;
 	}
 
-	public TipoPontoDeRisco getTipoDeRisco() {
-		return tipoDeRisco;
+	public TipoPontoDeApoio getTipoDeApoio() {
+		return tipoDeApoio;
 	}
 
-	public void setTipoDeRisco(TipoPontoDeRisco tipoDeRisco) {
-		this.tipoDeRisco = tipoDeRisco;
+	public void setTipoDeApoio(TipoPontoDeApoio tipoDeApoio) {
+		this.tipoDeApoio = tipoDeApoio;
 	}
 
 	public Usuario getUsuario() {
