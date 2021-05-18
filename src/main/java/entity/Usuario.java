@@ -1,13 +1,20 @@
 package entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -40,6 +47,26 @@ public class Usuario {
 	@NotNull(message = "{usuario.telefone.vazio}")
 	@Column(name = "telefone")
 	private String telefone;
+
+	@Valid
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<PontoDeRisco> pontosDeRisco;
+
+	public Usuario() {
+		super();
+		this.pontosDeRisco = new ArrayList<>();
+	}
+
+	public Usuario(Long id, String email, String senha, String nome, String telefone,
+			List<PontoDeRisco> pontosDeRisco) {
+		super();
+		this.id = id;
+		this.email = email;
+		this.senha = senha;
+		this.nome = nome;
+		this.telefone = telefone;
+		this.pontosDeRisco = pontosDeRisco;
+	}
 
 	public Long getId() {
 		return id;
@@ -79,5 +106,13 @@ public class Usuario {
 
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
+	}
+
+	public List<PontoDeRisco> getPontosDeRisco() {
+		return pontosDeRisco;
+	}
+
+	public void setPontosDeRisco(List<PontoDeRisco> pontosDeRisco) {
+		this.pontosDeRisco = pontosDeRisco;
 	}
 }

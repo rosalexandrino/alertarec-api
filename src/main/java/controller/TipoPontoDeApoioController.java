@@ -53,13 +53,19 @@ public class TipoPontoDeApoioController {
 		TipoPontoDeApoio tipo = new TipoPontoDeApoio();
 
 		try {
+			
+			TipoPontoDeApoioHttp tipoOld = this.selecionarTipoPontoDeApoioPorId(tipoHttp.getId());
+			if(tipoOld != null) {
+				
+				tipo.setId(tipoOld.getId());
+				tipo.setDescricao(tipoHttp.getDescricao());
 
-			tipo.setId(tipoHttp.getId());
-			tipo.setDescricao(tipoHttp.getDescricao());
+				repository.Alterar(tipo);
 
-			repository.Alterar(tipo);
-
-			return "Registro alterado com sucesso!";
+				return "Registro alterado com sucesso!";
+			}else {
+				return "Erro ao alterar o registro";
+			}
 
 		} catch (Exception e) {
 
@@ -89,7 +95,7 @@ public class TipoPontoDeApoioController {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/id/{id}")
-	public TipoPontoDeApoioHttp GetTipoPontoDeApoioPorId(@PathParam("id") Long id) {
+	public TipoPontoDeApoioHttp selecionarTipoPontoDeApoioPorId(@PathParam("id") Long id) {
 
 		TipoPontoDeApoio tipo = repository.selecionarPorId(id);
 

@@ -61,15 +61,28 @@ public class UsuarioController {
 
 		try {
 			
-			usuario.setId(usuarioHttp.getId());
-			usuario.setNome(usuarioHttp.getNome());
-			usuario.setSenha(usuarioHttp.getSenha());
-			usuario.setTelefone(usuarioHttp.getTelefone());
+			UsuarioHttp usuarioOld = this.GetPessoaPorId(usuarioHttp.getId());
+			if(usuarioOld != null) {
+				
+				usuario.setId(usuarioOld.getId());
+				usuario.setEmail(usuarioOld.getEmail());
+				if(usuarioHttp.getSenha() != null && usuarioHttp.getSenha() != usuarioOld.getSenha()) {
+					usuario.setSenha(Authentication.encodeSHA256(usuarioHttp.getSenha()));
+				}else {
+					usuario.setSenha(usuarioOld.getSenha());
+				}
+				
+				usuario.setNome(usuarioHttp.getNome());
+				usuario.setTelefone(usuarioHttp.getTelefone());
 
-			repository.Alterar(usuario);
+				repository.Alterar(usuario);
 
-			return "Registro alterado com sucesso!";
+				return "Registro alterado com sucesso!";
 
+			}else {
+				return "Erro ao alterar o registro";
+			}
+			
 		} catch (Exception e) {
 
 			return "Erro ao alterar o registro " + e.getMessage();

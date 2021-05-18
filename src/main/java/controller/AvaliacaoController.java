@@ -54,13 +54,19 @@ public class AvaliacaoController {
 
 		try {
 			
-			avaliacao.setId(avaliacaoHttp.getId());
-			avaliacao.setNota(avaliacaoHttp.getNota());
-			avaliacao.setDescricao(avaliacaoHttp.getDescricao());
+			AvaliacaoHttp avaliacaoOld = this.selecionarAvaliacaoPorId(avaliacaoHttp.getId());
+			if(avaliacaoOld != null) {
+				
+				avaliacao.setId(avaliacaoOld.getId());
+				avaliacao.setNota(avaliacaoHttp.getNota());
+				avaliacao.setDescricao(avaliacaoHttp.getDescricao());
 
-			repository.Alterar(avaliacao);
+				repository.Alterar(avaliacao);
 
-			return "Registro alterado com sucesso!";
+				return "Registro alterado com sucesso!";
+			}else {
+				return "Erro ao alterar o registro";
+			}
 
 		} catch (Exception e) {
 
@@ -90,7 +96,7 @@ public class AvaliacaoController {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/id/{id}")
-	public AvaliacaoHttp GetAvaliacaoPorId(@PathParam("id") Long id) {
+	public AvaliacaoHttp selecionarAvaliacaoPorId(@PathParam("id") Long id) {
 
 		Avaliacao avaliacao = repository.selecionarPorId(id);
 

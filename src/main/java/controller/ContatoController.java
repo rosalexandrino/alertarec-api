@@ -54,13 +54,20 @@ public class ContatoController {
 
 		try {
 
-			contato.setId(contatoHttp.getId());
-			contato.setDescricao(contatoHttp.getDescricao());
-			contato.setTelefone(contatoHttp.getTelefone());
+			ContatoHttp contatoOld = this.selecionarContatoPorId(contatoHttp.getId());
+			if(contatoOld != null) {
+				
+				contato.setId(contatoOld.getId());
+				contato.setDescricao(contatoHttp.getDescricao());
+				contato.setTelefone(contatoHttp.getTelefone());
 
-			repository.Alterar(contato);
+				repository.Alterar(contato);
 
-			return "Registro alterado com sucesso!";
+				return "Registro alterado com sucesso!";
+			}else {
+				return "Erro ao alterar o registro";
+			}
+
 
 		} catch (Exception e) {
 
@@ -90,7 +97,7 @@ public class ContatoController {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/id/{id}")
-	public ContatoHttp GetContatoPorId(@PathParam("id") Long id) {
+	public ContatoHttp selecionarContatoPorId(@PathParam("id") Long id) {
 
 		Contato contato = repository.selecionarPorId(id);
 

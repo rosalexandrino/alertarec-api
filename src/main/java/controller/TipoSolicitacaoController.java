@@ -53,13 +53,19 @@ public class TipoSolicitacaoController {
 		TipoSolicitacao tipo = new TipoSolicitacao();
 
 		try {
+			
+			TipoSolicitacaoHttp tipoOld = this.selecionarTipoSolicitacaoPorId(tipoHttp.getId());
+			if(tipoOld != null) {
+				
+				tipo.setId(tipoOld.getId());
+				tipo.setDescricao(tipoHttp.getDescricao());
 
-			tipo.setId(tipoHttp.getId());
-			tipo.setDescricao(tipoHttp.getDescricao());
+				repository.Alterar(tipo);
 
-			repository.Alterar(tipo);
-
-			return "Registro alterado com sucesso!";
+				return "Registro alterado com sucesso!";
+			}else {
+				return "Erro ao alterar o registro";
+			}
 
 		} catch (Exception e) {
 
@@ -89,7 +95,7 @@ public class TipoSolicitacaoController {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/id/{id}")
-	public TipoSolicitacaoHttp GetTipoSolicitacaoPorId(@PathParam("id") Long id) {
+	public TipoSolicitacaoHttp selecionarTipoSolicitacaoPorId(@PathParam("id") Long id) {
 
 		TipoSolicitacao tipo = repository.selecionarPorId(id);
 
