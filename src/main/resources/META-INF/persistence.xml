@@ -15,6 +15,7 @@
 		<class>entity.Avaliacao</class>
 		<class>entity.PontoDeRisco</class>
 		<class>entity.PontoDeApoio</class>
+		<class>entity.Solicitacao</class>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
 			<property name="hibernate.dialect"
