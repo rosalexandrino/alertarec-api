@@ -39,7 +39,7 @@ public class PontoDeRiscoRepository {
 		TypedQuery<PontoDeRisco> typedQuery = this.entityManager.createNamedQuery("PontoDeRisco.selecionarTodos", PontoDeRisco.class);
 		return typedQuery.getResultList();
 	}
-
+	
 	public PontoDeRisco selecionarPorId(Long id) {
 		return this.entityManager.find(PontoDeRisco.class, id);
 	}

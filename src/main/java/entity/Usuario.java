@@ -51,14 +51,19 @@ public class Usuario {
 	@Valid
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<PontoDeRisco> pontosDeRisco;
+	
+	@Valid
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<Solicitacao> solicitacoes;
 
 	public Usuario() {
 		super();
 		this.pontosDeRisco = new ArrayList<>();
+		this.solicitacoes = new ArrayList<>();
 	}
 
 	public Usuario(Long id, String email, String senha, String nome, String telefone,
-			List<PontoDeRisco> pontosDeRisco) {
+			List<PontoDeRisco> pontosDeRisco, List<Solicitacao> solicitacoes) {
 		super();
 		this.id = id;
 		this.email = email;
@@ -66,6 +71,7 @@ public class Usuario {
 		this.nome = nome;
 		this.telefone = telefone;
 		this.pontosDeRisco = pontosDeRisco;
+		this.solicitacoes = solicitacoes;
 	}
 
 	public Long getId() {
@@ -114,5 +120,13 @@ public class Usuario {
 
 	public void setPontosDeRisco(List<PontoDeRisco> pontosDeRisco) {
 		this.pontosDeRisco = pontosDeRisco;
+	}
+
+	public List<Solicitacao> getSolicitacoes() {
+		return solicitacoes;
+	}
+
+	public void setSolicitacoes(List<Solicitacao> solicitacoes) {
+		this.solicitacoes = solicitacoes;
 	}
 }
