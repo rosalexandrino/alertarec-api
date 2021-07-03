@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 @Entity
-@Table(name = "avaliacao")
+@Table(name = "avaliacoes")
 @NamedQueries(value = { @NamedQuery(name = "Avaliacao.selecionarTodos", query = "SELECT a FROM Avaliacao a") })
 public class Avaliacao {
 	
