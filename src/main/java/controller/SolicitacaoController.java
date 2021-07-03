@@ -78,6 +78,7 @@ public class SolicitacaoController {
 				solicitacao.setUsuario(usuarioRepository.selecionarPorId(solicitacaoOld.getUsuario()));
 				solicitacao.setDataSolicitacao(solicitacaoOld.getDataSolicitacao());
 				solicitacao.setDataConclusao(solicitacaoHttp.getDataConclusao());
+				solicitacao.setDataCriacao(solicitacaoOld.getDataCriacao());
 
 				repository.Alterar(solicitacao);
 
@@ -105,7 +106,10 @@ public class SolicitacaoController {
 
 		for (Solicitacao solicitacao : solicitacoes) {
 
-			solicitacoesHttp.add(new SolicitacaoHttp(solicitacao.getId(), solicitacao.getDescricao(), solicitacao.getTipo().getId(), solicitacao.getPonto().getId(), solicitacao.getUsuario().getId(), solicitacao.getDataSolicitacao(), solicitacao.getDataConclusao()));
+			solicitacoesHttp.add(new SolicitacaoHttp(solicitacao.getId(), solicitacao.getDescricao(), 
+					solicitacao.getTipo().getId(), solicitacao.getPonto().getId(), solicitacao.getUsuario().getId(), 
+					solicitacao.getDataSolicitacao(), solicitacao.getDataConclusao(), solicitacao.getDataCriacao(), 
+					solicitacao.getDataAtualizacao()));
 		}
 
 		return solicitacoesHttp;
@@ -119,7 +123,9 @@ public class SolicitacaoController {
 		Solicitacao solicitacao = repository.selecionarPorId(id);
 
 		if (solicitacao != null) {
-			return new SolicitacaoHttp(solicitacao.getId(), solicitacao.getDescricao(), solicitacao.getTipo().getId(), solicitacao.getPonto().getId(), solicitacao.getUsuario().getId(), solicitacao.getDataSolicitacao(), solicitacao.getDataConclusao());
+			return new SolicitacaoHttp(solicitacao.getId(), solicitacao.getDescricao(), solicitacao.getTipo().getId(),
+					solicitacao.getPonto().getId(), solicitacao.getUsuario().getId(), solicitacao.getDataSolicitacao(), 
+					solicitacao.getDataConclusao(), solicitacao.getDataCriacao(), solicitacao.getDataAtualizacao());
 		}
 		return null;
 	}
@@ -135,7 +141,9 @@ public class SolicitacaoController {
 		
 		for (Solicitacao solicitacao : solicitacoes) {
 
-			solicitacoesHttp.add(new SolicitacaoHttp(solicitacao.getId(), solicitacao.getDescricao(), solicitacao.getTipo().getId(), solicitacao.getPonto().getId(), solicitacao.getUsuario().getId(), solicitacao.getDataSolicitacao(), solicitacao.getDataConclusao()));
+			solicitacoesHttp.add(new SolicitacaoHttp(solicitacao.getId(), solicitacao.getDescricao(), solicitacao.getTipo().getId(), 
+					solicitacao.getPonto().getId(), solicitacao.getUsuario().getId(), solicitacao.getDataSolicitacao(), 
+					solicitacao.getDataConclusao(), solicitacao.getDataCriacao(), solicitacao.getDataAtualizacao()));
 		}
 
 		return solicitacoesHttp;
@@ -152,7 +160,9 @@ public class SolicitacaoController {
 		
 		for (Solicitacao solicitacao : solicitacoes) {
 
-			solicitacoesHttp.add(new SolicitacaoHttp(solicitacao.getId(), solicitacao.getDescricao(), solicitacao.getTipo().getId(), solicitacao.getPonto().getId(), solicitacao.getUsuario().getId(), solicitacao.getDataSolicitacao(), solicitacao.getDataConclusao()));
+			solicitacoesHttp.add(new SolicitacaoHttp(solicitacao.getId(), solicitacao.getDescricao(), solicitacao.getTipo().getId(),
+					solicitacao.getPonto().getId(), solicitacao.getUsuario().getId(), solicitacao.getDataSolicitacao(), 
+					solicitacao.getDataConclusao(), solicitacao.getDataCriacao(), solicitacao.getDataAtualizacao()));
 		}
 
 		return solicitacoesHttp;
@@ -169,7 +179,9 @@ public class SolicitacaoController {
 		
 		for (Solicitacao solicitacao : solicitacoes) {
 
-			solicitacoesHttp.add(new SolicitacaoHttp(solicitacao.getId(), solicitacao.getDescricao(), solicitacao.getTipo().getId(), solicitacao.getPonto().getId(), solicitacao.getUsuario().getId(), solicitacao.getDataSolicitacao(), solicitacao.getDataConclusao()));
+			solicitacoesHttp.add(new SolicitacaoHttp(solicitacao.getId(), solicitacao.getDescricao(), solicitacao.getTipo().getId(),
+					solicitacao.getPonto().getId(), solicitacao.getUsuario().getId(), solicitacao.getDataSolicitacao(), 
+					solicitacao.getDataConclusao(), solicitacao.getDataCriacao(), solicitacao.getDataAtualizacao()));
 		}
 
 		return solicitacoesHttp;

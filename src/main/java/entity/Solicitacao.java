@@ -5,9 +5,6 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -28,12 +25,7 @@ import javax.validation.constraints.Size;
 		@NamedQuery(name = "Solicitacao.selecionarPorTipo", query = "SELECT s FROM Solicitacao s WHERE s.tipo IN (SELECT t FROM TipoSolicitacao t WHERE t.id = :tipo)"),
 		@NamedQuery(name = "Solicitacao.selecionarPorUsuario", query = "SELECT s FROM Solicitacao s WHERE s.usuario IN (SELECT u FROM Usuario u WHERE u.id = :id)"),
 		@NamedQuery(name = "Solicitacao.selecionarAbertas", query = "SELECT s FROM Solicitacao s WHERE s.dataConclusao IS NULL") })
-public class Solicitacao{
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+public class Solicitacao extends Entidade{
 
 	@NotBlank(message = "{solicitacao.descricao.vazio}")
 	@Size(min = 1, max = 220, message = "{solicitacao.descricao.tamanho}")
@@ -70,12 +62,22 @@ public class Solicitacao{
 	@Column(name = "data_conclusao")
 	private Date dataConclusao;
 
-	public Long getId() {
-		return id;
+	public Solicitacao() {
+		super();
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public Solicitacao(Long id) {
+		super(id);
+	}
+
+	public Solicitacao(Long id, String descricao, TipoSolicitacao tipo, PontoDeRisco ponto, Usuario usuario, Date dataSolicitacao, Date dataConclusao) {
+		super(id);
+		this.descricao = descricao;
+		this.tipo = tipo;
+		this.ponto = ponto;
+		this.usuario = usuario;
+		this.dataSolicitacao = dataSolicitacao;
+		this.dataConclusao = dataConclusao;
 	}
 
 	public String getDescricao() {

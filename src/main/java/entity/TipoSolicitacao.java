@@ -7,9 +7,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -20,12 +17,7 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Table(name = "tipos_solicitacao")
 @NamedQueries(value = { @NamedQuery(name = "TipoSolicitacao.selecionarTodos", query = "SELECT t FROM TipoSolicitacao t") })
-public class TipoSolicitacao {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+public class TipoSolicitacao extends Entidade{
 	
 	@NotBlank(message = "{tipoSolicitacao.descricao.vazio}")
 	@Column(name = "descricao")
@@ -40,20 +32,15 @@ public class TipoSolicitacao {
 		this.solicitacoes = new ArrayList<>();
 	}
 
+	public TipoSolicitacao(Long id) {
+		super(id);
+		this.solicitacoes = new ArrayList<>();
+	}
+
 	public TipoSolicitacao(Long id, String descricao, List<Solicitacao> solicitacoes) {
-		super();
-		this.id = id;
+		super(id);
 		this.descricao = descricao;
 		this.solicitacoes = solicitacoes;
-	}
-
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getDescricao() {

@@ -1,15 +1,10 @@
 package controller;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -27,9 +22,7 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import entity.Arquivo;
-import entity.Avaliacao;
 import http.ArquivoHttp;
-import http.AvaliacaoHttp;
 import repository.ArquivoRepository;
 
 @Path("/arquivo")
@@ -79,7 +72,7 @@ public class ArquivoController {
 
 		for (Arquivo arquivo : arquivos) {
 
-			arquivoHttp.add(new ArquivoHttp(arquivo.getId(), arquivo.getNome()));
+			arquivoHttp.add(new ArquivoHttp(arquivo.getId(), arquivo.getNome(), arquivo.getDataCriacao(), arquivo.getDataAtualizacao()));
 		}
 
 		return arquivoHttp;

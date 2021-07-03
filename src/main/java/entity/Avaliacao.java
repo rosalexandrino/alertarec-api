@@ -2,9 +2,6 @@ package entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -14,12 +11,7 @@ import javax.validation.constraints.Pattern;
 @Entity
 @Table(name = "avaliacoes")
 @NamedQueries(value = { @NamedQuery(name = "Avaliacao.selecionarTodos", query = "SELECT a FROM Avaliacao a") })
-public class Avaliacao {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+public class Avaliacao extends Entidade{
 	
 	@Pattern(regexp = "[1-5]{1}", message = "{avaliacao.nota.invalido}")
 	@NotBlank(message = "{avaliacao.nota.vazio}")
@@ -30,12 +22,18 @@ public class Avaliacao {
 	@Column(name = "descricao")
 	private String descricao;
 
-	public Long getId() {
-		return id;
+	public Avaliacao() {
+		super();
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public Avaliacao(Long id) {
+		super(id);
+	}
+
+	public Avaliacao(Long id, String nota, String descricao) {
+		super(id);
+		this.nota = nota;
+		this.descricao = descricao;
 	}
 
 	public String getNota() {

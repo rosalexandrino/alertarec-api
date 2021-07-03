@@ -2,9 +2,6 @@ package entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -13,12 +10,7 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Table(name = "arquivos")
 @NamedQueries(value = { @NamedQuery(name = "Arquivo.selecionarTodos", query = "SELECT a FROM Arquivo a")})
-public class Arquivo {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+public class Arquivo extends Entidade{
 	
 	@NotBlank(message = "{arquivo.nome.vazio}")
 	@Column(name = "nome")
@@ -28,12 +20,18 @@ public class Arquivo {
 	@Column(name = "arquivo", length = 1000000000)
 	private byte[] arquivo;
 
-	public Long getId() {
-		return id;
+	public Arquivo() {
+		super();
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public Arquivo(Long id) {
+		super(id);
+	}
+
+	public Arquivo(Long id, String nome, byte[] arquivo) {
+		super(id);
+		this.nome = nome;
+		this.arquivo = arquivo;
 	}
 
 	public String getNome() {

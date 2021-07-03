@@ -74,6 +74,7 @@ public class UsuarioController {
 				
 				usuario.setNome(usuarioHttp.getNome());
 				usuario.setTelefone(usuarioHttp.getTelefone());
+				usuario.setDataCriacao(usuarioOld.getDataCriacao());
 
 				repository.Alterar(usuario);
 
@@ -103,7 +104,7 @@ public class UsuarioController {
 		for (Usuario usuario : usuarios) {
 
 			usuariosHttp.add(new UsuarioHttp(usuario.getId(), usuario.getEmail(), usuario.getSenha(), usuario.getNome(),
-					usuario.getTelefone()));
+					usuario.getTelefone(), usuario.getDataCriacao(), usuario.getDataAtualizacao()));
 		}
 
 		return usuariosHttp;
@@ -119,7 +120,7 @@ public class UsuarioController {
 
 		if (usuario != null) {
 			return new UsuarioHttp(usuario.getId(), usuario.getEmail(), usuario.getSenha(), usuario.getNome(),
-					usuario.getTelefone());
+					usuario.getTelefone(), usuario.getDataCriacao(), usuario.getDataAtualizacao());
 		}
 		return null;
 	}
@@ -133,7 +134,7 @@ public class UsuarioController {
 
 		if (usuario != null) {
 			return new UsuarioHttp(usuario.getId(), usuario.getEmail(), usuario.getSenha(), usuario.getNome(),
-					usuario.getTelefone());
+					usuario.getTelefone(), usuario.getDataCriacao(), usuario.getDataAtualizacao());
 		}
 		return null;
 	}

@@ -21,11 +21,15 @@ public class SolicitacaoHttp {
 	
 	private Date dataConclusao;
 	
+	private Date dataCriacao;
+	
+	private Date dataAtualizacao;
+	
 	public SolicitacaoHttp() {
 	}
 
 	public SolicitacaoHttp(Long id, String descricao, Long tipo, Long ponto, Long usuario, Date dataSolicitacao,
-			Date dataConclusao) {
+			Date dataConclusao, Date dataCriacao, Date dataAtualizacao) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
@@ -34,6 +38,8 @@ public class SolicitacaoHttp {
 		this.usuario = usuario;
 		this.dataSolicitacao = dataSolicitacao;
 		this.dataConclusao = dataConclusao;
+		this.dataCriacao = dataCriacao;
+		this.dataAtualizacao = dataAtualizacao;
 	}
 
 	public Long getId() {
@@ -91,4 +97,20 @@ public class SolicitacaoHttp {
 	public void setDataConclusao(Date dataConclusao) {
 		this.dataConclusao = dataConclusao;
 	}	
+	
+	public Date getDataCriacao() {
+		return dataCriacao;
+	}
+
+	public void setDataCriacao(Date dataCriacao) {
+		this.dataCriacao = dataCriacao;
+	}
+
+	public Date getDataAtualizacao() {
+		return dataAtualizacao;
+	}
+
+	public void setDataAtualizacao(Date dataAtualizacao) {
+		this.dataAtualizacao = dataAtualizacao;
+	}
 }

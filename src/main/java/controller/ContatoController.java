@@ -60,6 +60,7 @@ public class ContatoController {
 				contato.setId(contatoOld.getId());
 				contato.setDescricao(contatoHttp.getDescricao());
 				contato.setTelefone(contatoHttp.getTelefone());
+				contato.setDataCriacao(contatoOld.getDataCriacao());
 
 				repository.Alterar(contato);
 
@@ -88,7 +89,8 @@ public class ContatoController {
 
 		for (Contato contato : contatos) {
 
-			contatosHttp.add(new ContatoHttp(contato.getId(), contato.getDescricao(), contato.getTelefone()));
+			contatosHttp.add(new ContatoHttp(contato.getId(), contato.getDescricao(), contato.getTelefone(),
+					contato.getDataCriacao(), contato.getDataAtualizacao()));
 		}
 
 		return contatosHttp;
@@ -102,7 +104,8 @@ public class ContatoController {
 		Contato contato = repository.selecionarPorId(id);
 
 		if (contato != null) {
-			return new ContatoHttp(contato.getId(), contato.getDescricao(), contato.getTelefone());
+			return new ContatoHttp(contato.getId(), contato.getDescricao(), contato.getTelefone(),
+					contato.getDataCriacao(), contato.getDataAtualizacao());
 		}
 		return null;
 	}

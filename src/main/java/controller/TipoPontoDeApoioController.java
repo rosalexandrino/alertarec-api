@@ -59,6 +59,7 @@ public class TipoPontoDeApoioController {
 				
 				tipo.setId(tipoOld.getId());
 				tipo.setDescricao(tipoHttp.getDescricao());
+				tipo.setDataCriacao(tipoOld.getDataCriacao());
 
 				repository.Alterar(tipo);
 
@@ -86,7 +87,7 @@ public class TipoPontoDeApoioController {
 
 		for (TipoPontoDeApoio tipo : tipos) {
 
-			tiposHttp.add(new TipoPontoDeApoioHttp(tipo.getId(), tipo.getDescricao()));
+			tiposHttp.add(new TipoPontoDeApoioHttp(tipo.getId(), tipo.getDescricao(), tipo.getDataCriacao(), tipo.getDataAtualizacao()));
 		}
 
 		return tiposHttp;
@@ -100,7 +101,7 @@ public class TipoPontoDeApoioController {
 		TipoPontoDeApoio tipo = repository.selecionarPorId(id);
 
 		if (tipo != null) {
-			return new TipoPontoDeApoioHttp(tipo.getId(), tipo.getDescricao());
+			return new TipoPontoDeApoioHttp(tipo.getId(), tipo.getDescricao(), tipo.getDataCriacao(), tipo.getDataAtualizacao());
 		}
 		return null;
 	}

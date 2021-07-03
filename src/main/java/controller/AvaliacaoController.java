@@ -60,6 +60,7 @@ public class AvaliacaoController {
 				avaliacao.setId(avaliacaoOld.getId());
 				avaliacao.setNota(avaliacaoHttp.getNota());
 				avaliacao.setDescricao(avaliacaoHttp.getDescricao());
+				avaliacao.setDataCriacao(avaliacaoOld.getDataCriacao());
 
 				repository.Alterar(avaliacao);
 
@@ -87,7 +88,8 @@ public class AvaliacaoController {
 
 		for (Avaliacao avaliacao : avaliacoes) {
 
-			avaliacaoHttp.add(new AvaliacaoHttp(avaliacao.getId(), avaliacao.getNota(), avaliacao.getDescricao()));
+			avaliacaoHttp.add(new AvaliacaoHttp(avaliacao.getId(), avaliacao.getNota(), avaliacao.getDescricao(),
+					avaliacao.getDataCriacao(), avaliacao.getDataAtualizacao()));
 		}
 
 		return avaliacaoHttp;
@@ -101,7 +103,8 @@ public class AvaliacaoController {
 		Avaliacao avaliacao = repository.selecionarPorId(id);
 
 		if (avaliacao != null) {
-			return new AvaliacaoHttp(avaliacao.getId(), avaliacao.getNota(), avaliacao.getDescricao());
+			return new AvaliacaoHttp(avaliacao.getId(), avaliacao.getNota(), avaliacao.getDescricao(),
+					avaliacao.getDataCriacao(), avaliacao.getDataAtualizacao());
 		}
 		return null;
 	}

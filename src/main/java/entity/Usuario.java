@@ -7,9 +7,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -24,18 +21,14 @@ import javax.validation.constraints.Pattern;
 @Table(name = "usuarios")
 @NamedQueries(value = { @NamedQuery(name = "Usuario.selecionarTodos", query = "SELECT u FROM Usuario u"),
 		@NamedQuery(name = "Usuario.selecionarPorEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email") })
-public class Usuario {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+public class Usuario extends Entidade{
 
 	@Email(message = "{usuario.email.invalido}")
 	@NotBlank(message = "{usuario.email.vazio}")
 	@Column(name = "email", unique = true)
 	private String email;
 
+	@NotBlank(message = "{usuario.senha.vazio}")
 	@Column(name = "senha")
 	private String senha;
 
@@ -55,31 +48,28 @@ public class Usuario {
 	@Valid
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<Solicitacao> solicitacoes;
-
+	
 	public Usuario() {
 		super();
+		this.pontosDeRisco = new ArrayList<>();
+		this.solicitacoes = new ArrayList<>();
+	}
+	
+	public Usuario(Long id) {
+		super(id);
 		this.pontosDeRisco = new ArrayList<>();
 		this.solicitacoes = new ArrayList<>();
 	}
 
 	public Usuario(Long id, String email, String senha, String nome, String telefone,
 			List<PontoDeRisco> pontosDeRisco, List<Solicitacao> solicitacoes) {
-		super();
-		this.id = id;
+		super(id);
 		this.email = email;
 		this.senha = senha;
 		this.nome = nome;
 		this.telefone = telefone;
 		this.pontosDeRisco = pontosDeRisco;
 		this.solicitacoes = solicitacoes;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getEmail() {

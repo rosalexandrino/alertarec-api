@@ -6,9 +6,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -23,12 +20,7 @@ import javax.validation.constraints.NotBlank;
 @NamedQueries(value = { @NamedQuery(name = "PontoDeRisco.selecionarTodos", query = "SELECT p FROM PontoDeRisco p"),
 		@NamedQuery(name = "PontoDeRisco.selecionarPorTipo", query = "SELECT p FROM PontoDeRisco p WHERE p.tipoDeRisco IN (SELECT t FROM TipoPontoDeRisco t WHERE t.id = :tipo)"),
 		@NamedQuery(name = "PontoDeRisco.selecionarPorUsuario", query = "SELECT p FROM PontoDeRisco p WHERE p.usuario IN (SELECT u FROM Usuario u WHERE u.id = :id)") })
-public class PontoDeRisco {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+public class PontoDeRisco extends Entidade{
 
 	@NotBlank(message = "{pontoDeRisco.longitude.vazio}")
 	@Column(name = "longitude")
@@ -55,24 +47,19 @@ public class PontoDeRisco {
 
 	public PontoDeRisco() {
 	}
+	
+	public PontoDeRisco(Long id) {
+		super(id);
+	}
 
 	public PontoDeRisco(Long id, double longitude, double latitude, TipoPontoDeRisco tipoDeRisco, Usuario usuario,
 			List<Solicitacao> solicitacoes) {
-		super();
-		this.id = id;
+		super(id);
 		this.longitude = longitude;
 		this.latitude = latitude;
 		this.tipoDeRisco = tipoDeRisco;
 		this.usuario = usuario;
 		this.solicitacoes = solicitacoes;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public double getLongitude() {

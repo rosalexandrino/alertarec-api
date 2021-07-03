@@ -1,5 +1,7 @@
 package http;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -14,17 +16,23 @@ public class UsuarioHttp {
 	private String nome;
 
 	private String telefone;
+	
+	private Date dataCriacao;
+	
+	private Date dataAtualizacao;
 
 	public UsuarioHttp() {
 	}
 
-	public UsuarioHttp(Long id, String email, String senha, String nome, String telefone) {
+	public UsuarioHttp(Long id, String email, String senha, String nome, String telefone, Date dataCriacao, Date dataAtualizacao) {
 		super();
 		this.id = id;
 		this.email = email;
 		this.senha = senha;
 		this.nome = nome;
 		this.telefone = telefone;
+		this.dataCriacao = dataCriacao;
+		this.dataAtualizacao = dataAtualizacao;
 	}
 
 	public Long getId() {
@@ -65,5 +73,21 @@ public class UsuarioHttp {
 
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
+	}
+
+	public Date getDataCriacao() {
+		return dataCriacao;
+	}
+
+	public void setDataCriacao(Date dataCriacao) {
+		this.dataCriacao = dataCriacao;
+	}
+
+	public Date getDataAtualizacao() {
+		return dataAtualizacao;
+	}
+
+	public void setDataAtualizacao(Date dataAtualizacao) {
+		this.dataAtualizacao = dataAtualizacao;
 	}
 }

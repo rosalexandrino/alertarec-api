@@ -59,6 +59,7 @@ public class TipoPontoDeRiscoController {
 				
 				tipo.setId(tipoOld.getId());
 				tipo.setDescricao(tipoHttp.getDescricao());
+				tipo.setDataCriacao(tipoOld.getDataCriacao());
 
 				repository.Alterar(tipo);
 
@@ -87,7 +88,7 @@ public class TipoPontoDeRiscoController {
 
 		for (TipoPontoDeRisco tipo : tipos) {
 
-			tiposHttp.add(new TipoPontoDeRiscoHttp(tipo.getId(), tipo.getDescricao()));
+			tiposHttp.add(new TipoPontoDeRiscoHttp(tipo.getId(), tipo.getDescricao(), tipo.getDataCriacao(), tipo.getDataAtualizacao()));
 		}
 
 		return tiposHttp;
@@ -101,7 +102,7 @@ public class TipoPontoDeRiscoController {
 		TipoPontoDeRisco tipo = repository.selecionarPorId(id);
 
 		if (tipo != null) {
-			return new TipoPontoDeRiscoHttp(tipo.getId(), tipo.getDescricao());
+			return new TipoPontoDeRiscoHttp(tipo.getId(), tipo.getDescricao(), tipo.getDataCriacao(), tipo.getDataAtualizacao());
 		}
 		return null;
 	}

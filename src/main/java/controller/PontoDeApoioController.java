@@ -71,6 +71,7 @@ public class PontoDeApoioController {
 				ponto.setLongitude(pontoHttp.getLongitude());
 				ponto.setTipoDeApoio(tipoDeApoioRepository.selecionarPorId(pontoHttp.getTipoDeApoio()));
 				ponto.setUsuario(usuarioRepository.selecionarPorId(pontoOld.getUsuario()));
+				ponto.setDataCriacao(pontoOld.getDataCriacao());
 
 				repository.Alterar(ponto);
 
@@ -98,7 +99,8 @@ public class PontoDeApoioController {
 
 		for (PontoDeApoio ponto : pontos) {
 
-			pontosHttp.add(new PontoDeApoioHttp(ponto.getId(), ponto.getLongitude(), ponto.getLatitude(), ponto.getTipoDeApoio().getId(), ponto.getUsuario().getId()));
+			pontosHttp.add(new PontoDeApoioHttp(ponto.getId(), ponto.getLongitude(), ponto.getLatitude(), 
+					ponto.getTipoDeApoio().getId(), ponto.getUsuario().getId(), ponto.getDataCriacao(), ponto.getDataAtualizacao()));
 		}
 
 		return pontosHttp;
@@ -112,7 +114,8 @@ public class PontoDeApoioController {
 		PontoDeApoio ponto = repository.selecionarPorId(id);
 
 		if (ponto != null) {
-			return new PontoDeApoioHttp(ponto.getId(), ponto.getLongitude(), ponto.getLatitude(), ponto.getTipoDeApoio().getId(), ponto.getUsuario().getId());
+			return new PontoDeApoioHttp(ponto.getId(), ponto.getLongitude(), ponto.getLatitude(), ponto.getTipoDeApoio().getId(),
+					ponto.getUsuario().getId(), ponto.getDataCriacao(), ponto.getDataAtualizacao());
 		}
 		return null;
 	}

@@ -17,6 +17,7 @@
 		<class>entity.PontoDeApoio</class>
 		<class>entity.Solicitacao</class>
 		<class>entity.Arquivo</class>
+		<class>entity.Entidade</class>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
 			<property name="hibernate.dialect"

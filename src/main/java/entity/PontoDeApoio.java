@@ -3,9 +3,6 @@ package entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -19,12 +16,7 @@ import javax.validation.constraints.NotBlank;
 @NamedQueries(value = { @NamedQuery(name = "PontoDeApoio.selecionarTodos", query = "SELECT p FROM PontoDeApoio p"),
 		@NamedQuery(name = "PontoDeApoio.selecionarPorTipo", query = "SELECT p FROM PontoDeApoio p WHERE p.tipoDeApoio IN (SELECT t FROM TipoPontoDeApoio t WHERE t.id = :tipo)"),
 		@NamedQuery(name = "PontoDeApoio.selecionarPorUsuario", query = "SELECT p FROM PontoDeApoio p WHERE p.usuario IN (SELECT u FROM Usuario u WHERE u.id = :id)") })
-public class PontoDeApoio{
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+public class PontoDeApoio extends Entidade{
 
 	@NotBlank(message = "{pontoDeApoio.longitude.vazio}")
 	@Column(name = "longitude")
@@ -45,12 +37,20 @@ public class PontoDeApoio{
 	@JoinColumn(name = "usuario")
 	private Usuario usuario;
 
-	public Long getId() {
-		return id;
+	public PontoDeApoio() {
+		super();
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public PontoDeApoio(Long id) {
+		super(id);
+	}
+
+	public PontoDeApoio(Long id, double longitude, double latitude, TipoPontoDeApoio tipoDeApoio, Usuario usuario) {
+		super(id);
+		this.longitude = longitude;
+		this.latitude = latitude;
+		this.tipoDeApoio = tipoDeApoio;
+		this.usuario = usuario;
 	}
 
 	public double getLongitude() {

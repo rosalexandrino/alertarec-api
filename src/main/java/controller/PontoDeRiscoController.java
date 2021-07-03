@@ -71,6 +71,7 @@ public class PontoDeRiscoController {
 				ponto.setLongitude(pontoHttp.getLongitude());
 				ponto.setTipoDeRisco(tipoDeRiscoRepository.selecionarPorId(pontoHttp.getTipoDeRisco()));
 				ponto.setUsuario(usuarioRepository.selecionarPorId(pontoOld.getUsuario()));
+				ponto.setDataCriacao(pontoOld.getDataCriacao());
 
 				repository.Alterar(ponto);
 
@@ -98,7 +99,8 @@ public class PontoDeRiscoController {
 
 		for (PontoDeRisco ponto : pontos) {
 
-			pontosHttp.add(new PontoDeRiscoHttp(ponto.getId(), ponto.getLongitude(), ponto.getLatitude(), ponto.getTipoDeRisco().getId(), ponto.getUsuario().getId()));
+			pontosHttp.add(new PontoDeRiscoHttp(ponto.getId(), ponto.getLongitude(), ponto.getLatitude(), ponto.getTipoDeRisco().getId(),
+					ponto.getUsuario().getId(), ponto.getDataCriacao(), ponto.getDataAtualizacao()));
 		}
 
 		return pontosHttp;
@@ -112,7 +114,8 @@ public class PontoDeRiscoController {
 		PontoDeRisco ponto = repository.selecionarPorId(id);
 
 		if (ponto != null) {
-			return new PontoDeRiscoHttp(ponto.getId(), ponto.getLongitude(), ponto.getLatitude(), ponto.getTipoDeRisco().getId(), ponto.getUsuario().getId());
+			return new PontoDeRiscoHttp(ponto.getId(), ponto.getLongitude(), ponto.getLatitude(), ponto.getTipoDeRisco().getId(),
+					ponto.getUsuario().getId(), ponto.getDataCriacao(), ponto.getDataAtualizacao());
 		}
 		return null;
 	}
