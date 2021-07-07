@@ -5,7 +5,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -33,9 +38,10 @@ public class ArquivoController {
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String Cadastrar(@FormDataParam("file") InputStream uploadedInputStream,
+	public Response Cadastrar(@FormDataParam("file") InputStream uploadedInputStream,
 			@FormDataParam("file") FormDataContentDisposition fileDetails) throws IOException {
-
+		
+		String message = "";
 		Arquivo arquivo = new Arquivo();
 		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 		int nRead;
@@ -49,16 +55,21 @@ public class ArquivoController {
 			arquivo.setNome(fileDetails.getFileName());
 			arquivo.setArquivo(buffer.toByteArray());
 
+			ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+			Validator validator = factory.getValidator();
+			Set<ConstraintViolation<Arquivo>> violations = validator.validate(arquivo);
+			for (ConstraintViolation<Arquivo> violation : violations) {
+			    message += violation.getMessage() + "\n"; 
+			}
+			if(message != "") {
+				return Response.status(Response.Status.BAD_REQUEST).entity("Erro ao cadastrar o registro: \n" + message ).build();
+			}
+			
 			repository.Salvar(arquivo);
-
-			return "Registro cadastrado com sucesso!";
-
+			return Response.status(Response.Status.OK).entity("Registro cadastrado com sucesso" ).build();			
 		} catch (Exception e) {
-
-			return "Erro ao cadastrar um registro " + e.getMessage();
-
-		}
-
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao cadastrar o registro: " + e.getMessage() ).build();
+		}	
 	}
 	
 	@GET
@@ -67,11 +78,8 @@ public class ArquivoController {
 	public List<ArquivoHttp> selecionarTodos() {
 
 		List<ArquivoHttp> arquivoHttp = new ArrayList<ArquivoHttp>();
-
 		List<Arquivo> arquivos = repository.selecionarTodos();
-
 		for (Arquivo arquivo : arquivos) {
-
 			arquivoHttp.add(new ArquivoHttp(arquivo.getId(), arquivo.getNome(), arquivo.getDataCriacao(), arquivo.getDataAtualizacao()));
 		}
 
@@ -97,26 +105,24 @@ public class ArquivoController {
 				}
 			}
 		};
-		return Response.ok(fileStream, MediaType.APPLICATION_OCTET_STREAM).header("content-disposition", fileName)
-				.build();
+		return Response.ok(fileStream, MediaType.APPLICATION_OCTET_STREAM).header("content-disposition", fileName).build();
 	}
 
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
-	public String Excluir(@PathParam("id") Long id) {
+	public Response Excluir(@PathParam("id") Long id) {
 
 		try {
-
-			repository.Excluir(id);
-
-			return "Registro excluido com sucesso!";
-
+			Arquivo arquivo = repository.selecionarPorId(id);
+			if(arquivo != null) {
+				repository.Excluir(arquivo.getId());
+				return Response.status(Response.Status.OK).entity("Registro excluído com sucesso" ).build();
+			}else {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao excluir o registro").build();
+			}
 		} catch (Exception e) {
-
-			return "Erro ao excluir o registro! " + e.getMessage();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao excluir o registro: \n" + e.getMessage()).build();
 		}
-
 	}
-
 }

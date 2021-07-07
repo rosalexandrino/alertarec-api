@@ -45,6 +45,12 @@ public class AvaliacaoRepository {
 		return this.entityManager.find(Avaliacao.class, id);
 	}
 
+	public List<Avaliacao> selecionarPorUsuario(String usuarioEmail) {
+		TypedQuery<Avaliacao> typedQuery = this.entityManager.createNamedQuery("Avaliacao.selecionarPorUsuario", Avaliacao.class);
+		typedQuery.setParameter("email", usuarioEmail);
+		return typedQuery.getResultList();
+	}
+	
 	public void Excluir(Long id) {
 
 		Avaliacao avaliacao = this.selecionarPorId(id);

@@ -2,6 +2,11 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.ValidatorFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -11,6 +16,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.validation.Validator;
 
 import entity.Usuario;
 import http.UsuarioHttp;
@@ -25,9 +32,11 @@ public class UsuarioController {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String Cadastrar(UsuarioHttp usuarioHttp) {
+	public Response Cadastrar(UsuarioHttp usuarioHttp) {
+
 
 		Usuario usuario = new Usuario();
+		String message = "";
 
 		try {
 			
@@ -39,35 +48,42 @@ public class UsuarioController {
 			usuario.setNome(usuarioHttp.getNome());
 			usuario.setSenha(usuarioHttp.getSenha());
 			usuario.setTelefone(usuarioHttp.getTelefone());
+			
+			ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+			Validator validator = factory.getValidator();
+			Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
+			for (ConstraintViolation<Usuario> violation : violations) {
+			    message += violation.getMessage() + "\n"; 
+			}
+			if(message != "") {
+				return Response.status(Response.Status.BAD_REQUEST).entity("Erro ao cadastrar o registro: \n" + message ).build();
+			}
 
 			repository.Salvar(usuario);
-
-			return "Registro cadastrado com sucesso!";
-
+			return Response.status(Response.Status.OK).entity("Registro cadastrado com sucesso" ).build();
 		} catch (Exception e) {
-
-			return "Erro ao cadastrar um registro " + e.getMessage();
-
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao cadastrar o registro: " + e.getMessage() ).build();
 		}
-
 	}
 
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String Alterar(UsuarioHttp usuarioHttp) {
-
+	public Response Alterar(UsuarioHttp usuarioHttp) {
+		
+		String message = "";
 		Usuario usuario = new Usuario();
 
 		try {
 			
-			UsuarioHttp usuarioOld = this.GetPessoaPorId(usuarioHttp.getId());
+			Usuario usuarioOld = repository.selecionarPorEmail(usuarioHttp.getEmail());
 			if(usuarioOld != null) {
 				
 				usuario.setId(usuarioOld.getId());
 				usuario.setEmail(usuarioOld.getEmail());
-				if(usuarioHttp.getSenha() != null && usuarioHttp.getSenha() != usuarioOld.getSenha()) {
-					usuario.setSenha(Authentication.encodeSHA256(usuarioHttp.getSenha()));
+				String newPassword = Authentication.encodeSHA256(usuarioHttp.getSenha());
+				if(usuarioHttp.getSenha() != null && newPassword != usuarioOld.getSenha()) {
+					usuario.setSenha(newPassword);
 				}else {
 					usuario.setSenha(usuarioOld.getSenha());
 				}
@@ -75,21 +91,25 @@ public class UsuarioController {
 				usuario.setNome(usuarioHttp.getNome());
 				usuario.setTelefone(usuarioHttp.getTelefone());
 				usuario.setDataCriacao(usuarioOld.getDataCriacao());
+				
+				ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+				Validator validator = factory.getValidator();
+				Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
+				for (ConstraintViolation<Usuario> violation : violations) {
+				    message += violation.getMessage() + "\n"; 
+				}
+				if(message != "") {
+					return Response.status(Response.Status.BAD_REQUEST).entity("Erro ao alterar o registro: \n" + message ).build();
+				}
 
 				repository.Alterar(usuario);
-
-				return "Registro alterado com sucesso!";
-
+				return Response.status(Response.Status.OK).entity("Registro alterado com sucesso" ).build();
 			}else {
-				return "Erro ao alterar o registro";
+				return Response.status(Response.Status.NOT_FOUND).entity("Erro ao alterar o registro").build();
 			}
-			
 		} catch (Exception e) {
-
-			return "Erro ao alterar o registro " + e.getMessage();
-
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao alterar o registro: \n" + e.getMessage()).build();
 		}
-
 	}
 
 	@GET
@@ -98,42 +118,22 @@ public class UsuarioController {
 	public List<UsuarioHttp> selecionarTodos() {
 
 		List<UsuarioHttp> usuariosHttp = new ArrayList<UsuarioHttp>();
-
 		List<Usuario> usuarios = repository.selecionarTodos();
-
 		for (Usuario usuario : usuarios) {
-
-			usuariosHttp.add(new UsuarioHttp(usuario.getId(), usuario.getEmail(), usuario.getSenha(), usuario.getNome(),
+			usuariosHttp.add(new UsuarioHttp(usuario.getEmail(), usuario.getSenha(), usuario.getNome(),
 					usuario.getTelefone(), usuario.getDataCriacao(), usuario.getDataAtualizacao()));
 		}
-
 		return usuariosHttp;
-
 	}
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/email/{email}")
-	public UsuarioHttp GetPessoa(@PathParam("email") String email) {
+	public UsuarioHttp GetUsuario(@PathParam("email") String email) {
 
 		Usuario usuario = repository.selecionarPorEmail(email);
-
 		if (usuario != null) {
-			return new UsuarioHttp(usuario.getId(), usuario.getEmail(), usuario.getSenha(), usuario.getNome(),
-					usuario.getTelefone(), usuario.getDataCriacao(), usuario.getDataAtualizacao());
-		}
-		return null;
-	}
-	
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/id/{id}")
-	public UsuarioHttp GetPessoaPorId(@PathParam("id") Long id) {
-
-		Usuario usuario = repository.selecionarPorId(id);
-
-		if (usuario != null) {
-			return new UsuarioHttp(usuario.getId(), usuario.getEmail(), usuario.getSenha(), usuario.getNome(),
+			return new UsuarioHttp(usuario.getEmail(), usuario.getSenha(), usuario.getNome(),
 					usuario.getTelefone(), usuario.getDataCriacao(), usuario.getDataAtualizacao());
 		}
 		return null;
@@ -142,20 +142,20 @@ public class UsuarioController {
 
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/{id}")
-	public String Excluir(@PathParam("id") Long id) {
+	@Path("/{email}")
+	public Response Excluir(@PathParam("email") String email) {
 
 		try {
-
-			repository.Excluir(id);
-
-			return "Registro excluido com sucesso!";
-
+			Usuario usuario = repository.selecionarPorEmail(email);
+			if(usuario != null) {
+				repository.Excluir(usuario.getId());
+				return Response.status(Response.Status.OK).entity("Registro excluído com sucesso" ).build();
+			}else {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao excluir o registro").build();
+			}
 		} catch (Exception e) {
-
-			return "Erro ao excluir o registro! " + e.getMessage();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao excluir o registro: \n" + e.getMessage()).build();
 		}
-
 	}
 
 }

@@ -15,7 +15,7 @@ public class PontoDeApoioHttp {
 	
 	private Long tipoDeApoio;
 	
-	private Long usuario;
+	private String usuarioEmail;
 
 	private Date dataCriacao;
 	
@@ -24,13 +24,13 @@ public class PontoDeApoioHttp {
 	public PontoDeApoioHttp() {
 	}
 
-	public PontoDeApoioHttp(Long id, double longitude, double latitude, Long tipoDeApoio, Long usuario, Date dataCriacao, Date dataAtualizacao) {
+	public PontoDeApoioHttp(Long id, double longitude, double latitude, Long tipoDeApoio, String usuarioEmail, Date dataCriacao, Date dataAtualizacao) {
 		super();
 		this.id = id;
 		this.longitude = longitude;
 		this.latitude = latitude;
 		this.tipoDeApoio = tipoDeApoio;
-		this.usuario = usuario;
+		this.usuarioEmail = usuarioEmail;
 		this.dataCriacao = dataCriacao;
 		this.dataAtualizacao = dataAtualizacao;
 	}
@@ -67,12 +67,12 @@ public class PontoDeApoioHttp {
 		this.tipoDeApoio = tipoDeApoio;
 	}
 
-	public Long getUsuario() {
-		return usuario;
+	public String getUsuarioEmail() {
+		return usuarioEmail;
 	}
 
-	public void setUsuario(Long usuario) {
-		this.usuario = usuario;
+	public void setUsuarioEmail(String usuarioEmail) {
+		this.usuarioEmail = usuarioEmail;
 	}
 	
 	public Date getDataCriacao() {

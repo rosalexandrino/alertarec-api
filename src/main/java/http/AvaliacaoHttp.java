@@ -13,6 +13,8 @@ public class AvaliacaoHttp {
 
 	private String descricao;
 	
+	private String usuarioEmail;
+	
 	private Date dataCriacao;
 	
 	private Date dataAtualizacao;
@@ -20,11 +22,12 @@ public class AvaliacaoHttp {
 	public AvaliacaoHttp() {
 	}
 	
-	public AvaliacaoHttp(Long id, String nota, String descricao, Date dataCriacao, Date dataAtualizacao) {
+	public AvaliacaoHttp(Long id, String nota, String descricao, String usuarioEmail, Date dataCriacao, Date dataAtualizacao) {
 		super();
 		this.id = id;
 		this.nota = nota;
 		this.descricao = descricao;
+		this.usuarioEmail = usuarioEmail;
 		this.dataCriacao = dataCriacao;
 		this.dataAtualizacao = dataAtualizacao;
 	}
@@ -51,6 +54,14 @@ public class AvaliacaoHttp {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+	
+	public String getUsuarioEmail() {
+		return usuarioEmail;
+	}
+
+	public void setUsuario(String usuarioEmail) {
+		this.usuarioEmail = usuarioEmail;
 	}
 	
 	public Date getDataCriacao() {

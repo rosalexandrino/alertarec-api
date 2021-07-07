@@ -43,6 +43,19 @@ public class PontoDeApoioRepository {
 	public PontoDeApoio selecionarPorId(Long id) {
 		return this.entityManager.find(PontoDeApoio.class, id);
 	}
+	
+	public List<PontoDeApoio> selecionarPorTipo(Long tipo) {
+		TypedQuery<PontoDeApoio> typedQuery = this.entityManager.createNamedQuery("PontoDeApoio.selecionarPorTipo", PontoDeApoio.class);
+		typedQuery.setParameter("tipo", tipo);
+		return typedQuery.getResultList();
+	}
+
+	
+	public List<PontoDeApoio> selecionarPorUsuario(String usuarioEmail) {
+		TypedQuery<PontoDeApoio> typedQuery = this.entityManager.createNamedQuery("PontoDeApoio.selecionarPorUsuario", PontoDeApoio.class);
+		typedQuery.setParameter("email", usuarioEmail);
+		return typedQuery.getResultList();
+	}
 
 	public void Excluir(Long id) {
 

@@ -13,6 +13,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "tipos_solicitacao")
@@ -20,6 +22,8 @@ import javax.validation.constraints.NotBlank;
 public class TipoSolicitacao extends Entidade{
 	
 	@NotBlank(message = "{tipoSolicitacao.descricao.vazio}")
+	@Pattern(regexp = "^[A-Za-z0-9áàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ\\s]+$", message = "{tipoSolicitacao.descricao.invalido}")
+	@Size(max = 50, message = "{tipoSolicitacao.descricao.tamanho}")
 	@Column(name = "descricao")
 	private String descricao;
 	

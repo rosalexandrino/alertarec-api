@@ -7,8 +7,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class UsuarioHttp {
 
-	private Long id;
-
 	private String email;
 
 	private String senha;
@@ -24,23 +22,14 @@ public class UsuarioHttp {
 	public UsuarioHttp() {
 	}
 
-	public UsuarioHttp(Long id, String email, String senha, String nome, String telefone, Date dataCriacao, Date dataAtualizacao) {
+	public UsuarioHttp(String email, String senha, String nome, String telefone, Date dataCriacao, Date dataAtualizacao) {
 		super();
-		this.id = id;
 		this.email = email;
 		this.senha = senha;
 		this.nome = nome;
 		this.telefone = telefone;
 		this.dataCriacao = dataCriacao;
 		this.dataAtualizacao = dataAtualizacao;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getEmail() {

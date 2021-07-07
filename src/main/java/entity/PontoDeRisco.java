@@ -13,25 +13,25 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "pontos_risco")
 @NamedQueries(value = { @NamedQuery(name = "PontoDeRisco.selecionarTodos", query = "SELECT p FROM PontoDeRisco p"),
 		@NamedQuery(name = "PontoDeRisco.selecionarPorTipo", query = "SELECT p FROM PontoDeRisco p WHERE p.tipoDeRisco IN (SELECT t FROM TipoPontoDeRisco t WHERE t.id = :tipo)"),
-		@NamedQuery(name = "PontoDeRisco.selecionarPorUsuario", query = "SELECT p FROM PontoDeRisco p WHERE p.usuario IN (SELECT u FROM Usuario u WHERE u.id = :id)") })
+		@NamedQuery(name = "PontoDeRisco.selecionarPorUsuario", query = "SELECT p FROM PontoDeRisco p WHERE p.usuario IN (SELECT u FROM Usuario u WHERE u.email = :email)") })
 public class PontoDeRisco extends Entidade{
 
-	@NotBlank(message = "{pontoDeRisco.longitude.vazio}")
+	@NotNull(message = "{pontoDeRisco.longitude.vazio}")
 	@Column(name = "longitude")
 	private double longitude;
 
-	@NotBlank(message = "{pontoDeRisco.latitude.vazio}")
+	@NotNull(message = "{pontoDeRisco.latitude.vazio}")
 	@Column(name = "latitude")
 	private double latitude;
 
 	@Valid
-	@NotBlank(message = "{pontoDeRisco.tipo.vazio}")
+	@NotNull(message = "{pontoDeRisco.tipo.vazio}")
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "tipo_risco")
 	private TipoPontoDeRisco tipoDeRisco;

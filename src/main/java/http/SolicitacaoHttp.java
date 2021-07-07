@@ -15,7 +15,7 @@ public class SolicitacaoHttp {
 	
 	private Long ponto;
 	
-	private Long usuario;
+	private String usuarioEmail;
 	
 	private Date dataSolicitacao;
 	
@@ -28,14 +28,14 @@ public class SolicitacaoHttp {
 	public SolicitacaoHttp() {
 	}
 
-	public SolicitacaoHttp(Long id, String descricao, Long tipo, Long ponto, Long usuario, Date dataSolicitacao,
+	public SolicitacaoHttp(Long id, String descricao, Long tipo, Long ponto, String usuarioEmail, Date dataSolicitacao,
 			Date dataConclusao, Date dataCriacao, Date dataAtualizacao) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
 		this.tipo = tipo;
 		this.ponto = ponto;
-		this.usuario = usuario;
+		this.usuarioEmail = usuarioEmail;
 		this.dataSolicitacao = dataSolicitacao;
 		this.dataConclusao = dataConclusao;
 		this.dataCriacao = dataCriacao;
@@ -74,12 +74,12 @@ public class SolicitacaoHttp {
 		this.ponto = ponto;
 	}
 
-	public Long getUsuario() {
-		return usuario;
+	public String getUsuarioEmail() {
+		return usuarioEmail;
 	}
 
-	public void setUsuario(Long usuario) {
-		this.usuario = usuario;
+	public void setUsuario(String usuarioEmail) {
+		this.usuarioEmail = usuarioEmail;
 	}
 
 	public Date getDataSolicitacao() {

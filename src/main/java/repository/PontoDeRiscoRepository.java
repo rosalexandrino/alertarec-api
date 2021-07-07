@@ -43,6 +43,18 @@ public class PontoDeRiscoRepository {
 	public PontoDeRisco selecionarPorId(Long id) {
 		return this.entityManager.find(PontoDeRisco.class, id);
 	}
+	
+	public List<PontoDeRisco> selecionarPorUsuario(String usuarioEmail) {
+		TypedQuery<PontoDeRisco> typedQuery = this.entityManager.createNamedQuery("PontoDeRisco.selecionarPorUsuario", PontoDeRisco.class);
+		typedQuery.setParameter("email", usuarioEmail);
+		return typedQuery.getResultList();
+	}
+	
+	public List<PontoDeRisco> selecionarPorTipo(Long tipo) {
+		TypedQuery<PontoDeRisco> typedQuery = this.entityManager.createNamedQuery("PontoDeRisco.selecionarPorTipo", PontoDeRisco.class);
+		typedQuery.setParameter("tipo", tipo);
+		return typedQuery.getResultList();
+	}
 
 	public void Excluir(Long id) {
 

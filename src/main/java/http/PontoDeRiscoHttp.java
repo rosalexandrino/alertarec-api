@@ -15,7 +15,7 @@ public class PontoDeRiscoHttp {
 	
 	private Long tipoDeRisco;
 	
-	private Long usuario;
+	private String usuarioEmail;
 	
 	private Date dataCriacao;
 	
@@ -24,13 +24,13 @@ public class PontoDeRiscoHttp {
 	public PontoDeRiscoHttp() {
 	}
 
-	public PontoDeRiscoHttp(Long id, double longitude, double latitude, Long tipoDeRisco, Long usuario, Date dataCriacao, Date dataAtualizacao) {
+	public PontoDeRiscoHttp(Long id, double longitude, double latitude, Long tipoDeRisco, String usuarioEmail, Date dataCriacao, Date dataAtualizacao) {
 		super();
 		this.id = id;
 		this.longitude = longitude;
 		this.latitude = latitude;
 		this.tipoDeRisco = tipoDeRisco;
-		this.usuario = usuario;
+		this.usuarioEmail = usuarioEmail;
 		this.dataCriacao = dataCriacao;
 		this.dataAtualizacao = dataAtualizacao;
 	}
@@ -67,12 +67,12 @@ public class PontoDeRiscoHttp {
 		this.tipoDeRisco = tipoDeRisco;
 	}
 
-	public Long getUsuario() {
-		return usuario;
+	public String getUsuarioEmail() {
+		return usuarioEmail;
 	}
 
-	public void setUsuario(Long usuario) {
-		this.usuario = usuario;
+	public void setUsuarioEmail(String usuarioEmail) {
+		this.usuarioEmail = usuarioEmail;
 	}
 	
 	public Date getDataCriacao() {

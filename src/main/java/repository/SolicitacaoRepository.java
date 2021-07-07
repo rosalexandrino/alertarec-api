@@ -50,9 +50,9 @@ public class SolicitacaoRepository {
 		return typedQuery.getResultList();
 	}
 	
-	public List<Solicitacao> selecionarPorUsuario(Long usuario) {
+	public List<Solicitacao> selecionarPorUsuario(String usuarioEmail) {
 		TypedQuery<Solicitacao> typedQuery = this.entityManager.createNamedQuery("Solicitacao.selecionarPorUsuario", Solicitacao.class);
-		typedQuery.setParameter("usuario", usuario);
+		typedQuery.setParameter("email", usuarioEmail);
 		return typedQuery.getResultList();
 	}
 	

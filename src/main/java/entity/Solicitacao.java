@@ -23,7 +23,7 @@ import javax.validation.constraints.Size;
 @Table(name = "solicitacoes")
 @NamedQueries(value = { @NamedQuery(name = "Solicitacao.selecionarTodos", query = "SELECT s FROM Solicitacao s"),
 		@NamedQuery(name = "Solicitacao.selecionarPorTipo", query = "SELECT s FROM Solicitacao s WHERE s.tipo IN (SELECT t FROM TipoSolicitacao t WHERE t.id = :tipo)"),
-		@NamedQuery(name = "Solicitacao.selecionarPorUsuario", query = "SELECT s FROM Solicitacao s WHERE s.usuario IN (SELECT u FROM Usuario u WHERE u.id = :id)"),
+		@NamedQuery(name = "Solicitacao.selecionarPorUsuario", query = "SELECT s FROM Solicitacao s WHERE s.usuario IN (SELECT u FROM Usuario u WHERE u.email = :email)"),
 		@NamedQuery(name = "Solicitacao.selecionarAbertas", query = "SELECT s FROM Solicitacao s WHERE s.dataConclusao IS NULL") })
 public class Solicitacao extends Entidade{
 

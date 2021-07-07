@@ -6,6 +6,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "tipos_ponto_apoio")
@@ -13,6 +15,8 @@ import javax.validation.constraints.NotBlank;
 public class TipoPontoDeApoio extends Entidade{
 	
 	@NotBlank(message = "{tipoPontoDeApoio.descricao.vazio}")
+	@Pattern(regexp = "^[A-Za-z0-9áàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ\\s]+$", message = "{tipoPontoDeApoio.descricao.invalido}")
+	@Size(max = 50, message = "{tipoPontoDeApoio.descricao.tamanho}")
 	@Column(name = "descricao")
 	private String descricao;
 

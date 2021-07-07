@@ -19,7 +19,7 @@ public class Contato extends Entidade{
 
 	@Pattern(regexp = "[0-9]+$", message = "{contato.telefone.invalido}")
 	@NotBlank(message = "{contato.telefone.vazio}")
-	@Column(name = "telefone")
+	@Column(name = "telefone", unique = true)
 	private String telefone;
 
 	public Contato() {
