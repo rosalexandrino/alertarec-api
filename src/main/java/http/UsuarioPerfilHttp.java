@@ -3,28 +3,28 @@ package http;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class PerfilHttp {
-		
-	Long id;
+public class UsuarioPerfilHttp {
+	
+	private String email;
 	
 	private String perfil;
 	
-	public PerfilHttp() {
+	public UsuarioPerfilHttp() {
 		super();
 	}
 
-	public PerfilHttp(Long id, String perfil) {
+	public UsuarioPerfilHttp(String email, String perfil) {
 		super();
-		this.id = id;
+		this.email = email;
 		this.perfil = perfil;
 	}
 	
-	public Long getId() {
-		return id;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	public String getPerfil() {

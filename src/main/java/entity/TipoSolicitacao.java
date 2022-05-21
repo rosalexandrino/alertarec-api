@@ -18,7 +18,8 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "tipos_solicitacao")
-@NamedQueries(value = { @NamedQuery(name = "TipoSolicitacao.selecionarTodos", query = "SELECT t FROM TipoSolicitacao t") })
+@NamedQueries(value = { @NamedQuery(name = "TipoSolicitacao.selecionarTodos", query = "SELECT t FROM TipoSolicitacao t"),
+		@NamedQuery(name = "TipoSolicitacao.selecionarPorDescricao", query = "SELECT t FROM TipoSolicitacao t WHERE t.descricao = :descricao") })
 public class TipoSolicitacao extends Entidade{
 	
 	@NotBlank(message = "{tipoSolicitacao.descricao.vazio}")

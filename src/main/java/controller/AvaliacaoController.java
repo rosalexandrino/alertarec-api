@@ -72,7 +72,7 @@ public class AvaliacaoController {
 
 		try {
 			
-			AvaliacaoHttp avaliacaoOld = this.selecionarAvaliacaoPorId(avaliacaoHttp.getId());
+			Avaliacao avaliacaoOld = repository.selecionarPorId(avaliacaoHttp.getId());
 			if(avaliacaoOld != null) {
 				
 				avaliacao.setId(avaliacaoOld.getId());
@@ -107,8 +107,7 @@ public class AvaliacaoController {
 		List<AvaliacaoHttp> avaliacaoHttp = new ArrayList<AvaliacaoHttp>();
 		List<Avaliacao> avaliacoes = repository.selecionarTodos();
 		for (Avaliacao avaliacao : avaliacoes) {
-			avaliacaoHttp.add(new AvaliacaoHttp(avaliacao.getId(), avaliacao.getNota(), avaliacao.getDescricao(), avaliacao.getUsuario().getEmail(),
-					avaliacao.getDataCriacao(), avaliacao.getDataAtualizacao()));
+			avaliacaoHttp.add(new AvaliacaoHttp(avaliacao.getId(), avaliacao.getNota(), avaliacao.getDescricao(), avaliacao.getUsuario().getEmail()));
 		}
 		return avaliacaoHttp;
 	}
@@ -121,8 +120,7 @@ public class AvaliacaoController {
 		List<AvaliacaoHttp> avaliacaoHttp = new ArrayList<AvaliacaoHttp>();
 		List<Avaliacao> avaliacoes = repository.selecionarPorUsuario(usuarioEmail);
 		for (Avaliacao avaliacao : avaliacoes) {
-			avaliacaoHttp.add(new AvaliacaoHttp(avaliacao.getId(), avaliacao.getNota(), avaliacao.getDescricao(), avaliacao.getUsuario().getEmail(),
-					avaliacao.getDataCriacao(), avaliacao.getDataAtualizacao()));
+			avaliacaoHttp.add(new AvaliacaoHttp(avaliacao.getId(), avaliacao.getNota(), avaliacao.getDescricao(), avaliacao.getUsuario().getEmail()));
 		}
 		return avaliacaoHttp;
 	}
@@ -134,8 +132,7 @@ public class AvaliacaoController {
 
 		Avaliacao avaliacao = repository.selecionarPorId(id);
 		if (avaliacao != null) {
-			return new AvaliacaoHttp(avaliacao.getId(), avaliacao.getNota(), avaliacao.getDescricao(), avaliacao.getUsuario().getEmail(),
-					avaliacao.getDataCriacao(), avaliacao.getDataAtualizacao());
+			return new AvaliacaoHttp(avaliacao.getId(), avaliacao.getNota(), avaliacao.getDescricao(), avaliacao.getUsuario().getEmail());
 		}
 		return null;
 	}

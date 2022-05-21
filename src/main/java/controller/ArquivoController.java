@@ -80,7 +80,7 @@ public class ArquivoController {
 		List<ArquivoHttp> arquivoHttp = new ArrayList<ArquivoHttp>();
 		List<Arquivo> arquivos = repository.selecionarTodos();
 		for (Arquivo arquivo : arquivos) {
-			arquivoHttp.add(new ArquivoHttp(arquivo.getId(), arquivo.getNome(), arquivo.getDataCriacao(), arquivo.getDataAtualizacao()));
+			arquivoHttp.add(new ArquivoHttp(arquivo.getId(), arquivo.getNome()));
 		}
 
 		return arquivoHttp;

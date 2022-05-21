@@ -66,7 +66,7 @@ public class TipoPontoDeRiscoController {
 
 		try {
 
-			TipoPontoDeRiscoHttp tipoOld = this.selecionarTipoPontoDeRiscoPorId(tipoHttp.getId());
+			TipoPontoDeRisco tipoOld = repository.selecionarPorId(tipoHttp.getId());
 			if(tipoOld != null) {
 				
 				tipo.setId(tipoOld.getId());
@@ -100,21 +100,9 @@ public class TipoPontoDeRiscoController {
 		List<TipoPontoDeRiscoHttp> tiposHttp = new ArrayList<TipoPontoDeRiscoHttp>();
 		List<TipoPontoDeRisco> tipos = repository.selecionarTodos();
 		for (TipoPontoDeRisco tipo : tipos) {
-			tiposHttp.add(new TipoPontoDeRiscoHttp(tipo.getId(), tipo.getDescricao(), tipo.getDataCriacao(), tipo.getDataAtualizacao()));
+			tiposHttp.add(new TipoPontoDeRiscoHttp(tipo.getId(), tipo.getDescricao()));
 		}
 		return tiposHttp;
-	}
-
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/id/{id}")
-	public TipoPontoDeRiscoHttp selecionarTipoPontoDeRiscoPorId(@PathParam("id") Long id) {
-
-		TipoPontoDeRisco tipo = repository.selecionarPorId(id);
-		if (tipo != null) {
-			return new TipoPontoDeRiscoHttp(tipo.getId(), tipo.getDescricao(), tipo.getDataCriacao(), tipo.getDataAtualizacao());
-		}
-		return null;
 	}
 
 	@DELETE

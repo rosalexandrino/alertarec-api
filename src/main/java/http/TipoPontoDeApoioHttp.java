@@ -1,29 +1,21 @@
 package http;
 
-import java.util.Date;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class TipoPontoDeApoioHttp {
-
-	private Long id;
-
+	
+	Long id;
+	
 	private String descricao;
-	
-	private Date dataCriacao;
-	
-	private Date dataAtualizacao;
 	
 	public TipoPontoDeApoioHttp() {
 	}
 	
-	public TipoPontoDeApoioHttp(Long id, String descricao, Date dataCriacao, Date dataAtualizacao) {
+	public TipoPontoDeApoioHttp(Long id, String descricao) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
-		this.dataCriacao = dataCriacao;
-		this.dataAtualizacao = dataAtualizacao;
 	}
 
 	public Long getId() {
@@ -33,29 +25,12 @@ public class TipoPontoDeApoioHttp {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	
 	public String getDescricao() {
 		return descricao;
 	}
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-	
-	
-	public Date getDataCriacao() {
-		return dataCriacao;
-	}
-
-	public void setDataCriacao(Date dataCriacao) {
-		this.dataCriacao = dataCriacao;
-	}
-
-	public Date getDataAtualizacao() {
-		return dataAtualizacao;
-	}
-
-	public void setDataAtualizacao(Date dataAtualizacao) {
-		this.dataAtualizacao = dataAtualizacao;
 	}
 }

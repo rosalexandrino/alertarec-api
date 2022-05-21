@@ -66,7 +66,7 @@ public class TipoPontoDeApoioController {
 
 		try {
 			
-			TipoPontoDeApoioHttp tipoOld = this.selecionarTipoPontoDeApoioPorId(tipoHttp.getId());
+			TipoPontoDeApoio tipoOld = repository.selecionarPorId(tipoHttp.getId());
 			if(tipoOld != null) {
 				
 				tipo.setId(tipoOld.getId());
@@ -101,21 +101,9 @@ public class TipoPontoDeApoioController {
 		List<TipoPontoDeApoioHttp> tiposHttp = new ArrayList<TipoPontoDeApoioHttp>();
 		List<TipoPontoDeApoio> tipos = repository.selecionarTodos();
 		for (TipoPontoDeApoio tipo : tipos) {
-			tiposHttp.add(new TipoPontoDeApoioHttp(tipo.getId(), tipo.getDescricao(), tipo.getDataCriacao(), tipo.getDataAtualizacao()));
+			tiposHttp.add(new TipoPontoDeApoioHttp(tipo.getId(), tipo.getDescricao()));
 		}
 		return tiposHttp;
-	}
-
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/id/{id}")
-	public TipoPontoDeApoioHttp selecionarTipoPontoDeApoioPorId(@PathParam("id") Long id) {
-
-		TipoPontoDeApoio tipo = repository.selecionarPorId(id);
-		if (tipo != null) {
-			return new TipoPontoDeApoioHttp(tipo.getId(), tipo.getDescricao(), tipo.getDataCriacao(), tipo.getDataAtualizacao());
-		}
-		return null;
 	}
 
 	@DELETE

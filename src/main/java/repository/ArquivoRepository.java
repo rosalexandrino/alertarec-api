@@ -1,5 +1,6 @@
 package repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -10,7 +11,7 @@ import javax.persistence.TypedQuery;
 import entity.Arquivo;
 
 public class ArquivoRepository {
-	
+
 	private EntityManagerFactory entityManagerFactory;
 
 	private EntityManager entityManager;
@@ -28,15 +29,25 @@ public class ArquivoRepository {
 		this.entityManager.getTransaction().commit();
 	}
 
-
 	public List<Arquivo> selecionarTodos() {
-		TypedQuery<Arquivo> typedQuery = this.entityManager.createNamedQuery("Arquivo.selecionarTodos",
-				Arquivo.class);
-		return typedQuery.getResultList();
+
+		try {
+			TypedQuery<Arquivo> typedQuery = this.entityManager.createNamedQuery("Arquivo.selecionarTodos",
+					Arquivo.class);
+			return typedQuery.getResultList();
+		} catch (Exception e) {
+			List<Arquivo> arquivos = new ArrayList<Arquivo>();
+			return arquivos;
+		}
 	}
 
 	public Arquivo selecionarPorId(Long id) {
-		return this.entityManager.find(Arquivo.class, id);
+
+		try {
+			return this.entityManager.find(Arquivo.class, id);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	public void Excluir(Long id) {

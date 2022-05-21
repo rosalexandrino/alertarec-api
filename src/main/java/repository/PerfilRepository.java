@@ -1,5 +1,6 @@
 package repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -14,7 +15,7 @@ public class PerfilRepository {
 	private EntityManagerFactory entityManagerFactory;
 
 	private EntityManager entityManager;
-	
+
 	public PerfilRepository() {
 
 		this.entityManagerFactory = Persistence.createEntityManagerFactory("AlertaRecifeApi");
@@ -36,12 +37,35 @@ public class PerfilRepository {
 	}
 
 	public List<Perfil> selecionarTodos() {
-		TypedQuery<Perfil> typedQuery = this.entityManager.createNamedQuery("Perfil.selecionarTodos", Perfil.class);
-		return typedQuery.getResultList();
+
+		try {
+			TypedQuery<Perfil> typedQuery = this.entityManager.createNamedQuery("Perfil.selecionarTodos", Perfil.class);
+			return typedQuery.getResultList();
+		} catch (Exception e) {
+			List<Perfil> perfis = new ArrayList<Perfil>();
+			return perfis;
+		}
 	}
 
 	public Perfil selecionarPorId(Long id) {
-		return this.entityManager.find(Perfil.class, id);
+
+		try {
+			return this.entityManager.find(Perfil.class, id);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public Perfil selecionarPorPerfil(String perfil) {
+
+		try {
+			TypedQuery<Perfil> typedQuery = this.entityManager.createNamedQuery("Perfil.selecionarPorPerfil",
+					Perfil.class);
+			typedQuery.setParameter("perfil", perfil);
+			return typedQuery.getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	public void Excluir(Long id) {

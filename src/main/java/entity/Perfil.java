@@ -11,7 +11,8 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "perfis")
-@NamedQueries(value = { @NamedQuery(name = "Perfil.selecionarTodos", query = "SELECT p FROM Perfil p") })
+@NamedQueries(value = { @NamedQuery(name = "Perfil.selecionarTodos", query = "SELECT p FROM Perfil p"),
+		@NamedQuery(name = "Perfil.selecionarPorPerfil", query = "SELECT p FROM Perfil p WHERE p.perfil = :perfil")})
 public class Perfil extends Entidade {
 
 	@NotBlank(message = "{perfil.perfil.vazio}")

@@ -76,14 +76,14 @@ public class PontoDeApoioController {
 
 		try {
 			
-			PontoDeApoioHttp pontoOld = this.selecionarPontoDeApoioPorId(pontoHttp.getId());
+			PontoDeApoio pontoOld = repository.selecionarPorId(pontoHttp.getId());
 			if(pontoOld != null) {
 				
 				ponto.setId(pontoOld.getId());
 				ponto.setLatitude(pontoHttp.getLatitude());
 				ponto.setLongitude(pontoHttp.getLongitude());
 				ponto.setTipoDeApoio(tipoDeApoioRepository.selecionarPorId(pontoHttp.getTipoDeApoio()));
-				ponto.setUsuario(usuarioRepository.selecionarPorEmail(pontoOld.getUsuarioEmail()));
+				ponto.setUsuario(usuarioRepository.selecionarPorEmail(pontoOld.getUsuario().getEmail()));
 				ponto.setDataCriacao(pontoOld.getDataCriacao());
 
 				ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -114,7 +114,7 @@ public class PontoDeApoioController {
 		List<PontoDeApoio> pontos = repository.selecionarTodos();
 		for (PontoDeApoio ponto : pontos) {
 			pontosHttp.add(new PontoDeApoioHttp(ponto.getId(), ponto.getLongitude(), ponto.getLatitude(), 
-					ponto.getTipoDeApoio().getId(), ponto.getUsuario().getEmail(), ponto.getDataCriacao(), ponto.getDataAtualizacao()));
+					ponto.getTipoDeApoio().getId(), ponto.getUsuario().getEmail()));
 		}
 		return pontosHttp;
 	}
@@ -128,7 +128,7 @@ public class PontoDeApoioController {
 		List<PontoDeApoio> pontos = repository.selecionarPorUsuario(usuarioEmail);
 		for (PontoDeApoio ponto : pontos) {
 			pontosHttp.add(new PontoDeApoioHttp(ponto.getId(), ponto.getLongitude(), ponto.getLatitude(), ponto.getTipoDeApoio().getId(),
-					ponto.getUsuario().getEmail(), ponto.getDataCriacao(), ponto.getDataAtualizacao()));
+					ponto.getUsuario().getEmail()));
 		}
 		return pontosHttp;
 	}
@@ -142,7 +142,7 @@ public class PontoDeApoioController {
 		List<PontoDeApoio> pontos = repository.selecionarPorTipo(tipo);
 		for (PontoDeApoio ponto : pontos) {
 			pontosHttp.add(new PontoDeApoioHttp(ponto.getId(), ponto.getLongitude(), ponto.getLatitude(), ponto.getTipoDeApoio().getId(),
-					ponto.getUsuario().getEmail(), ponto.getDataCriacao(), ponto.getDataAtualizacao()));
+					ponto.getUsuario().getEmail()));
 		}
 		return pontosHttp;
 	}
@@ -155,7 +155,7 @@ public class PontoDeApoioController {
 		PontoDeApoio ponto = repository.selecionarPorId(id);
 		if (ponto != null) {
 			return new PontoDeApoioHttp(ponto.getId(), ponto.getLongitude(), ponto.getLatitude(), ponto.getTipoDeApoio().getId(),
-					ponto.getUsuario().getEmail(), ponto.getDataCriacao(), ponto.getDataAtualizacao());
+					ponto.getUsuario().getEmail());
 		}
 		return null;
 	}

@@ -76,14 +76,14 @@ public class PontoDeRiscoController {
 
 		try {
 			
-			PontoDeRiscoHttp pontoOld = this.selecionarPontoDeRiscoPorId(pontoHttp.getId());
+			PontoDeRisco pontoOld = repository.selecionarPorId(pontoHttp.getId());
 			if(pontoOld != null) {
 				
 				ponto.setId(pontoOld.getId());
 				ponto.setLatitude(pontoHttp.getLatitude());
 				ponto.setLongitude(pontoHttp.getLongitude());
 				ponto.setTipoDeRisco(tipoDeRiscoRepository.selecionarPorId(pontoHttp.getTipoDeRisco()));
-				ponto.setUsuario(usuarioRepository.selecionarPorEmail(pontoOld.getUsuarioEmail()));
+				ponto.setUsuario(usuarioRepository.selecionarPorEmail(pontoOld.getUsuario().getEmail()));
 				ponto.setDataCriacao(pontoOld.getDataCriacao());
 
 				ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -114,7 +114,7 @@ public class PontoDeRiscoController {
 		List<PontoDeRisco> pontos = repository.selecionarTodos();
 		for (PontoDeRisco ponto : pontos) {
 			pontosHttp.add(new PontoDeRiscoHttp(ponto.getId(), ponto.getLongitude(), ponto.getLatitude(), ponto.getTipoDeRisco().getId(),
-					ponto.getUsuario().getEmail(), ponto.getDataCriacao(), ponto.getDataAtualizacao()));
+					ponto.getUsuario().getEmail()));
 		}
 		return pontosHttp;
 	}
@@ -128,7 +128,7 @@ public class PontoDeRiscoController {
 		List<PontoDeRisco> pontos = repository.selecionarPorUsuario(usuarioEmail);
 		for (PontoDeRisco ponto : pontos) {
 			pontosHttp.add(new PontoDeRiscoHttp(ponto.getId(), ponto.getLongitude(), ponto.getLatitude(), ponto.getTipoDeRisco().getId(),
-					ponto.getUsuario().getEmail(), ponto.getDataCriacao(), ponto.getDataAtualizacao()));
+					ponto.getUsuario().getEmail()));
 		}
 		return pontosHttp;
 	}
@@ -142,7 +142,7 @@ public class PontoDeRiscoController {
 		List<PontoDeRisco> pontos = repository.selecionarPorTipo(tipo);
 		for (PontoDeRisco ponto : pontos) {
 			pontosHttp.add(new PontoDeRiscoHttp(ponto.getId(), ponto.getLongitude(), ponto.getLatitude(), ponto.getTipoDeRisco().getId(),
-					ponto.getUsuario().getEmail(), ponto.getDataCriacao(), ponto.getDataAtualizacao()));
+					ponto.getUsuario().getEmail()));
 		}
 		return pontosHttp;
 	}
@@ -155,7 +155,7 @@ public class PontoDeRiscoController {
 		PontoDeRisco ponto = repository.selecionarPorId(id);
 		if (ponto != null) {
 			return new PontoDeRiscoHttp(ponto.getId(), ponto.getLongitude(), ponto.getLatitude(), ponto.getTipoDeRisco().getId(),
-					ponto.getUsuario().getEmail(), ponto.getDataCriacao(), ponto.getDataAtualizacao());
+					ponto.getUsuario().getEmail());
 		}
 		return null;
 	}

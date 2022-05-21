@@ -1,5 +1,6 @@
 package repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -8,7 +9,6 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
 import entity.TipoPontoDeRisco;
-
 public class TipoPontoDeRiscoRepository {
 
 	private EntityManagerFactory entityManagerFactory;
@@ -16,7 +16,7 @@ public class TipoPontoDeRiscoRepository {
 	private EntityManager entityManager;
 
 	public TipoPontoDeRiscoRepository() {
-		
+
 		this.entityManagerFactory = Persistence.createEntityManagerFactory("AlertaRecifeApi");
 		this.entityManager = this.entityManagerFactory.createEntityManager();
 	}
@@ -36,12 +36,36 @@ public class TipoPontoDeRiscoRepository {
 	}
 
 	public List<TipoPontoDeRisco> selecionarTodos() {
-		TypedQuery<TipoPontoDeRisco> typedQuery = this.entityManager.createNamedQuery("TipoPontoDeRisco.selecionarTodos", TipoPontoDeRisco.class);
-		return typedQuery.getResultList();
+		
+		try {
+			TypedQuery<TipoPontoDeRisco> typedQuery = this.entityManager
+					.createNamedQuery("TipoPontoDeRisco.selecionarTodos", TipoPontoDeRisco.class);
+			return typedQuery.getResultList();
+		} catch (Exception e) {
+			List<TipoPontoDeRisco> tipos = new ArrayList<TipoPontoDeRisco>();
+			return tipos;
+		}
+	}
+
+	public TipoPontoDeRisco selecionarPorDescricao(String descricao) {
+		
+		try {
+			TypedQuery<TipoPontoDeRisco> typedQuery = this.entityManager
+					.createNamedQuery("TipoPontoDeRisco.selecionarPorDescricao", TipoPontoDeRisco.class);
+			typedQuery.setParameter("descricao", descricao);
+			return typedQuery.getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	public TipoPontoDeRisco selecionarPorId(Long id) {
-		return this.entityManager.find(TipoPontoDeRisco.class, id);
+		
+		try {
+			return this.entityManager.find(TipoPontoDeRisco.class, id);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	public void Excluir(Long id) {
@@ -51,6 +75,5 @@ public class TipoPontoDeRiscoRepository {
 		this.entityManager.getTransaction().begin();
 		this.entityManager.remove(tipo);
 		this.entityManager.getTransaction().commit();
-
 	}
 }

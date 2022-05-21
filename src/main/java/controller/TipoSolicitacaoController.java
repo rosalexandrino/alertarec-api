@@ -66,7 +66,7 @@ public class TipoSolicitacaoController {
 
 		try {
 			
-			TipoSolicitacaoHttp tipoOld = this.selecionarTipoSolicitacaoPorId(tipoHttp.getId());
+			TipoSolicitacao tipoOld = repository.selecionarPorId(tipoHttp.getId());
 			if(tipoOld != null) {
 				
 				tipo.setId(tipoOld.getId());
@@ -101,21 +101,9 @@ public class TipoSolicitacaoController {
 		List<TipoSolicitacaoHttp> tiposHttp = new ArrayList<TipoSolicitacaoHttp>();
 		List<TipoSolicitacao> tipos = repository.selecionarTodos();
 		for (TipoSolicitacao tipo : tipos) {
-			tiposHttp.add(new TipoSolicitacaoHttp(tipo.getId(), tipo.getDescricao(), tipo.getDataCriacao(), tipo.getDataAtualizacao()));
+			tiposHttp.add(new TipoSolicitacaoHttp(tipo.getId(), tipo.getDescricao()));
 		}
 		return tiposHttp;
-	}
-
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/id/{id}")
-	public TipoSolicitacaoHttp selecionarTipoSolicitacaoPorId(@PathParam("id") Long id) {
-
-		TipoSolicitacao tipo = repository.selecionarPorId(id);
-		if (tipo != null) {
-			return new TipoSolicitacaoHttp(tipo.getId(), tipo.getDescricao(), tipo.getDataCriacao(), tipo.getDataAtualizacao());
-		}
-		return null;
 	}
 
 	@DELETE

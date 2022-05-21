@@ -1,5 +1,6 @@
 package repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -10,7 +11,7 @@ import javax.persistence.TypedQuery;
 import entity.PontoDeRisco;
 
 public class PontoDeRiscoRepository {
-	
+
 	private EntityManagerFactory entityManagerFactory;
 
 	private EntityManager entityManager;
@@ -36,34 +37,58 @@ public class PontoDeRiscoRepository {
 	}
 
 	public List<PontoDeRisco> selecionarTodos() {
-		TypedQuery<PontoDeRisco> typedQuery = this.entityManager.createNamedQuery("PontoDeRisco.selecionarTodos", PontoDeRisco.class);
-		return typedQuery.getResultList();
+
+		try {
+			TypedQuery<PontoDeRisco> typedQuery = this.entityManager.createNamedQuery("PontoDeRisco.selecionarTodos",
+					PontoDeRisco.class);
+			return typedQuery.getResultList();
+		} catch (Exception e) {
+			List<PontoDeRisco> pontos = new ArrayList<PontoDeRisco>();
+			return pontos;
+		}
 	}
-	
+
 	public PontoDeRisco selecionarPorId(Long id) {
-		return this.entityManager.find(PontoDeRisco.class, id);
+
+		try {
+			return this.entityManager.find(PontoDeRisco.class, id);
+		} catch (Exception e) {
+			return null;
+		}
 	}
-	
+
 	public List<PontoDeRisco> selecionarPorUsuario(String usuarioEmail) {
-		TypedQuery<PontoDeRisco> typedQuery = this.entityManager.createNamedQuery("PontoDeRisco.selecionarPorUsuario", PontoDeRisco.class);
-		typedQuery.setParameter("email", usuarioEmail);
-		return typedQuery.getResultList();
+
+		try {
+			TypedQuery<PontoDeRisco> typedQuery = this.entityManager
+					.createNamedQuery("PontoDeRisco.selecionarPorUsuario", PontoDeRisco.class);
+			typedQuery.setParameter("email", usuarioEmail);
+			return typedQuery.getResultList();
+		} catch (Exception e) {
+			List<PontoDeRisco> pontos = new ArrayList<PontoDeRisco>();
+			return pontos;
+		}
 	}
-	
+
 	public List<PontoDeRisco> selecionarPorTipo(Long tipo) {
-		TypedQuery<PontoDeRisco> typedQuery = this.entityManager.createNamedQuery("PontoDeRisco.selecionarPorTipo", PontoDeRisco.class);
-		typedQuery.setParameter("tipo", tipo);
-		return typedQuery.getResultList();
+
+		try {
+			TypedQuery<PontoDeRisco> typedQuery = this.entityManager.createNamedQuery("PontoDeRisco.selecionarPorTipo",
+					PontoDeRisco.class);
+			typedQuery.setParameter("tipo", tipo);
+			return typedQuery.getResultList();
+		} catch (Exception e) {
+			List<PontoDeRisco> pontos = new ArrayList<PontoDeRisco>();
+			return pontos;
+		}
 	}
 
 	public void Excluir(Long id) {
 
 		PontoDeRisco ponto = this.selecionarPorId(id);
-
-		this.entityManager.getTransaction().begin();
-		this.entityManager.remove(ponto);
-		this.entityManager.getTransaction().commit();
-
+			this.entityManager.getTransaction().begin();
+			this.entityManager.remove(ponto);
+			this.entityManager.getTransaction().commit();
 	}
 
 }

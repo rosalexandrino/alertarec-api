@@ -1,7 +1,5 @@
 package http;
 
-import java.util.Date;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -11,19 +9,13 @@ public class ArquivoHttp {
 	
 	private String nome;
 	
-	private Date dataCriacao;
-	
-	private Date dataAtualizacao;
-	
 	public ArquivoHttp() {
 	}
 
-	public ArquivoHttp(Long id, String nome, Date dataCriacao, Date dataAtualizacao) {
+	public ArquivoHttp(Long id, String nome) {
 		super();
 		this.id = id;
 		this.nome = nome;
-		this.dataCriacao = dataCriacao;
-		this.dataAtualizacao = dataAtualizacao;
 	}
 
 	public Long getId() {
@@ -40,21 +32,5 @@ public class ArquivoHttp {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-	
-	public Date getDataCriacao() {
-		return dataCriacao;
-	}
-
-	public void setDataCriacao(Date dataCriacao) {
-		this.dataCriacao = dataCriacao;
-	}
-
-	public Date getDataAtualizacao() {
-		return dataAtualizacao;
-	}
-
-	public void setDataAtualizacao(Date dataAtualizacao) {
-		this.dataAtualizacao = dataAtualizacao;
 	}
 }

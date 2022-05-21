@@ -1,5 +1,6 @@
 package repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -10,7 +11,7 @@ import javax.persistence.TypedQuery;
 import entity.PontoDeApoio;
 
 public class PontoDeApoioRepository {
-	
+
 	private EntityManagerFactory entityManagerFactory;
 
 	private EntityManager entityManager;
@@ -36,25 +37,50 @@ public class PontoDeApoioRepository {
 	}
 
 	public List<PontoDeApoio> selecionarTodos() {
-		TypedQuery<PontoDeApoio> typedQuery = this.entityManager.createNamedQuery("PontoDeApoio.selecionarTodos", PontoDeApoio.class);
-		return typedQuery.getResultList();
+
+		try {
+			TypedQuery<PontoDeApoio> typedQuery = this.entityManager.createNamedQuery("PontoDeApoio.selecionarTodos",
+					PontoDeApoio.class);
+			return typedQuery.getResultList();
+		} catch (Exception e) {
+			List<PontoDeApoio> pontos = new ArrayList<PontoDeApoio>();
+			return pontos;
+		}
 	}
 
 	public PontoDeApoio selecionarPorId(Long id) {
-		return this.entityManager.find(PontoDeApoio.class, id);
-	}
-	
-	public List<PontoDeApoio> selecionarPorTipo(Long tipo) {
-		TypedQuery<PontoDeApoio> typedQuery = this.entityManager.createNamedQuery("PontoDeApoio.selecionarPorTipo", PontoDeApoio.class);
-		typedQuery.setParameter("tipo", tipo);
-		return typedQuery.getResultList();
+
+		try {
+			return this.entityManager.find(PontoDeApoio.class, id);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
-	
+	public List<PontoDeApoio> selecionarPorTipo(Long tipo) {
+
+		try {
+			TypedQuery<PontoDeApoio> typedQuery = this.entityManager.createNamedQuery("PontoDeApoio.selecionarPorTipo",
+					PontoDeApoio.class);
+			typedQuery.setParameter("tipo", tipo);
+			return typedQuery.getResultList();
+		} catch (Exception e) {
+			List<PontoDeApoio> pontos = new ArrayList<PontoDeApoio>();
+			return pontos;
+		}
+	}
+
 	public List<PontoDeApoio> selecionarPorUsuario(String usuarioEmail) {
-		TypedQuery<PontoDeApoio> typedQuery = this.entityManager.createNamedQuery("PontoDeApoio.selecionarPorUsuario", PontoDeApoio.class);
-		typedQuery.setParameter("email", usuarioEmail);
-		return typedQuery.getResultList();
+
+		try {
+			TypedQuery<PontoDeApoio> typedQuery = this.entityManager
+					.createNamedQuery("PontoDeApoio.selecionarPorUsuario", PontoDeApoio.class);
+			typedQuery.setParameter("email", usuarioEmail);
+			return typedQuery.getResultList();
+		} catch (Exception e) {
+			List<PontoDeApoio> pontos = new ArrayList<PontoDeApoio>();
+			return pontos;
+		}
 	}
 
 	public void Excluir(Long id) {
@@ -64,7 +90,6 @@ public class PontoDeApoioRepository {
 		this.entityManager.getTransaction().begin();
 		this.entityManager.remove(ponto);
 		this.entityManager.getTransaction().commit();
-
 	}
 
 }

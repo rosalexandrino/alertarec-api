@@ -1,7 +1,5 @@
 package http;
 
-import java.util.Date;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -17,22 +15,16 @@ public class PontoDeRiscoHttp {
 	
 	private String usuarioEmail;
 	
-	private Date dataCriacao;
-	
-	private Date dataAtualizacao;
-	
 	public PontoDeRiscoHttp() {
 	}
 
-	public PontoDeRiscoHttp(Long id, double longitude, double latitude, Long tipoDeRisco, String usuarioEmail, Date dataCriacao, Date dataAtualizacao) {
+	public PontoDeRiscoHttp(Long id, double longitude, double latitude, Long tipoDeRisco, String usuarioEmail) {
 		super();
 		this.id = id;
 		this.longitude = longitude;
 		this.latitude = latitude;
 		this.tipoDeRisco = tipoDeRisco;
 		this.usuarioEmail = usuarioEmail;
-		this.dataCriacao = dataCriacao;
-		this.dataAtualizacao = dataAtualizacao;
 	}
 
 	public Long getId() {
@@ -73,21 +65,5 @@ public class PontoDeRiscoHttp {
 
 	public void setUsuarioEmail(String usuarioEmail) {
 		this.usuarioEmail = usuarioEmail;
-	}
-	
-	public Date getDataCriacao() {
-		return dataCriacao;
-	}
-
-	public void setDataCriacao(Date dataCriacao) {
-		this.dataCriacao = dataCriacao;
-	}
-
-	public Date getDataAtualizacao() {
-		return dataAtualizacao;
-	}
-
-	public void setDataAtualizacao(Date dataAtualizacao) {
-		this.dataAtualizacao = dataAtualizacao;
 	}
 }

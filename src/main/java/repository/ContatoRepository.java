@@ -1,5 +1,6 @@
 package repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -36,12 +37,24 @@ public class ContatoRepository {
 	}
 
 	public List<Contato> selecionarTodos() {
-		TypedQuery<Contato> typedQuery = this.entityManager.createNamedQuery("Contato.selecionarTodos", Contato.class);
-		return typedQuery.getResultList();
+
+		try {
+			TypedQuery<Contato> typedQuery = this.entityManager.createNamedQuery("Contato.selecionarTodos",
+					Contato.class);
+			return typedQuery.getResultList();
+		} catch (Exception e) {
+			List<Contato> contatos = new ArrayList<Contato>();
+			return contatos;
+		}
 	}
 
 	public Contato selecionarPorId(Long id) {
-		return this.entityManager.find(Contato.class, id);
+
+		try {
+			return this.entityManager.find(Contato.class, id);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	public void Excluir(Long id) {

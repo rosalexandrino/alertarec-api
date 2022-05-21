@@ -1,7 +1,5 @@
 package http;
 
-import java.util.Date;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -14,22 +12,16 @@ public class AvaliacaoHttp {
 	private String descricao;
 	
 	private String usuarioEmail;
-	
-	private Date dataCriacao;
-	
-	private Date dataAtualizacao;
 
 	public AvaliacaoHttp() {
 	}
 	
-	public AvaliacaoHttp(Long id, String nota, String descricao, String usuarioEmail, Date dataCriacao, Date dataAtualizacao) {
+	public AvaliacaoHttp(Long id, String nota, String descricao, String usuarioEmail) {
 		super();
 		this.id = id;
 		this.nota = nota;
 		this.descricao = descricao;
 		this.usuarioEmail = usuarioEmail;
-		this.dataCriacao = dataCriacao;
-		this.dataAtualizacao = dataAtualizacao;
 	}
 
 	public Long getId() {
@@ -62,21 +54,5 @@ public class AvaliacaoHttp {
 
 	public void setUsuario(String usuarioEmail) {
 		this.usuarioEmail = usuarioEmail;
-	}
-	
-	public Date getDataCriacao() {
-		return dataCriacao;
-	}
-
-	public void setDataCriacao(Date dataCriacao) {
-		this.dataCriacao = dataCriacao;
-	}
-
-	public Date getDataAtualizacao() {
-		return dataAtualizacao;
-	}
-
-	public void setDataAtualizacao(Date dataAtualizacao) {
-		this.dataAtualizacao = dataAtualizacao;
 	}
 }

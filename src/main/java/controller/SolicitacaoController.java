@@ -81,14 +81,14 @@ public class SolicitacaoController {
 
 		try {
 			
-			SolicitacaoHttp solicitacaoOld = this.selecionarSolicitacaoPorId(solicitacaoHttp.getId());
+			Solicitacao solicitacaoOld = repository.selecionarPorId(solicitacaoHttp.getId());
 			if(solicitacaoOld != null) {
 				
 				solicitacao.setId(solicitacaoOld.getId());
 				solicitacao.setDescricao(solicitacaoHttp.getDescricao());
 				solicitacao.setPonto(pontoDeRiscoRepository.selecionarPorId(solicitacaoHttp.getPonto()));
 				solicitacao.setTipo(tipoDeSolicitacaoRepository.selecionarPorId(solicitacaoHttp.getTipo()));
-				solicitacao.setUsuario(usuarioRepository.selecionarPorEmail(solicitacaoOld.getUsuarioEmail()));
+				solicitacao.setUsuario(usuarioRepository.selecionarPorEmail(solicitacaoOld.getUsuario().getEmail()));
 				solicitacao.setDataSolicitacao(solicitacaoOld.getDataSolicitacao());
 				solicitacao.setDataConclusao(solicitacaoHttp.getDataConclusao());
 				solicitacao.setDataCriacao(solicitacaoOld.getDataCriacao());
@@ -123,8 +123,7 @@ public class SolicitacaoController {
 		for (Solicitacao solicitacao : solicitacoes) {
 			solicitacoesHttp.add(new SolicitacaoHttp(solicitacao.getId(), solicitacao.getDescricao(), 
 					solicitacao.getTipo().getId(), solicitacao.getPonto().getId(), solicitacao.getUsuario().getEmail(), 
-					solicitacao.getDataSolicitacao(), solicitacao.getDataConclusao(), solicitacao.getDataCriacao(), 
-					solicitacao.getDataAtualizacao()));
+					solicitacao.getDataSolicitacao(), solicitacao.getDataConclusao()));
 		}
 		return solicitacoesHttp;
 	}
@@ -138,7 +137,7 @@ public class SolicitacaoController {
 		if (solicitacao != null) {
 			return new SolicitacaoHttp(solicitacao.getId(), solicitacao.getDescricao(), solicitacao.getTipo().getId(),
 					solicitacao.getPonto().getId(), solicitacao.getUsuario().getEmail(), solicitacao.getDataSolicitacao(), 
-					solicitacao.getDataConclusao(), solicitacao.getDataCriacao(), solicitacao.getDataAtualizacao());
+					solicitacao.getDataConclusao());
 		}
 		return null;
 	}
@@ -153,7 +152,7 @@ public class SolicitacaoController {
 		for (Solicitacao solicitacao : solicitacoes) {
 			solicitacoesHttp.add(new SolicitacaoHttp(solicitacao.getId(), solicitacao.getDescricao(), solicitacao.getTipo().getId(), 
 					solicitacao.getPonto().getId(), solicitacao.getUsuario().getEmail(), solicitacao.getDataSolicitacao(), 
-					solicitacao.getDataConclusao(), solicitacao.getDataCriacao(), solicitacao.getDataAtualizacao()));
+					solicitacao.getDataConclusao()));
 		}
 		return solicitacoesHttp;
 	}
@@ -168,7 +167,7 @@ public class SolicitacaoController {
 		for (Solicitacao solicitacao : solicitacoes) {
 			solicitacoesHttp.add(new SolicitacaoHttp(solicitacao.getId(), solicitacao.getDescricao(), solicitacao.getTipo().getId(),
 					solicitacao.getPonto().getId(), solicitacao.getUsuario().getEmail(), solicitacao.getDataSolicitacao(), 
-					solicitacao.getDataConclusao(), solicitacao.getDataCriacao(), solicitacao.getDataAtualizacao()));
+					solicitacao.getDataConclusao()));
 		}
 		return solicitacoesHttp;
 	}
@@ -183,7 +182,7 @@ public class SolicitacaoController {
 		for (Solicitacao solicitacao : solicitacoes) {
 			solicitacoesHttp.add(new SolicitacaoHttp(solicitacao.getId(), solicitacao.getDescricao(), solicitacao.getTipo().getId(),
 					solicitacao.getPonto().getId(), solicitacao.getUsuario().getEmail(), solicitacao.getDataSolicitacao(), 
-					solicitacao.getDataConclusao(), solicitacao.getDataCriacao(), solicitacao.getDataAtualizacao()));
+					solicitacao.getDataConclusao()));
 		}
 		return solicitacoesHttp;
 	}

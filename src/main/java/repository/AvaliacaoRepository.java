@@ -1,5 +1,6 @@
 package repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -36,21 +37,39 @@ public class AvaliacaoRepository {
 	}
 
 	public List<Avaliacao> selecionarTodos() {
-		TypedQuery<Avaliacao> typedQuery = this.entityManager.createNamedQuery("Avaliacao.selecionarTodos",
-				Avaliacao.class);
-		return typedQuery.getResultList();
+
+		try {
+			TypedQuery<Avaliacao> typedQuery = this.entityManager.createNamedQuery("Avaliacao.selecionarTodos",
+					Avaliacao.class);
+			return typedQuery.getResultList();
+		} catch (Exception e) {
+			List<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
+			return avaliacoes;
+		}
 	}
 
 	public Avaliacao selecionarPorId(Long id) {
-		return this.entityManager.find(Avaliacao.class, id);
+
+		try {
+			return this.entityManager.find(Avaliacao.class, id);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	public List<Avaliacao> selecionarPorUsuario(String usuarioEmail) {
-		TypedQuery<Avaliacao> typedQuery = this.entityManager.createNamedQuery("Avaliacao.selecionarPorUsuario", Avaliacao.class);
-		typedQuery.setParameter("email", usuarioEmail);
-		return typedQuery.getResultList();
+
+		try {
+			TypedQuery<Avaliacao> typedQuery = this.entityManager.createNamedQuery("Avaliacao.selecionarPorUsuario",
+					Avaliacao.class);
+			typedQuery.setParameter("email", usuarioEmail);
+			return typedQuery.getResultList();
+		} catch (Exception e) {
+			List<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
+			return avaliacoes;
+		}
 	}
-	
+
 	public void Excluir(Long id) {
 
 		Avaliacao avaliacao = this.selecionarPorId(id);
@@ -58,6 +77,5 @@ public class AvaliacaoRepository {
 		this.entityManager.getTransaction().begin();
 		this.entityManager.remove(avaliacao);
 		this.entityManager.getTransaction().commit();
-
 	}
 }

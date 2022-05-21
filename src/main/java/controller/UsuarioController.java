@@ -17,10 +17,15 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import javax.validation.Validator;
 
+import entity.Perfil;
 import entity.Usuario;
+import entity.UsuarioPerfil;
 import http.UsuarioHttp;
+import repository.PerfilRepository;
+import repository.UsuarioPerfilRepository;
 import repository.UsuarioRepository;
 import util.Authentication;
 
@@ -29,18 +34,21 @@ public class UsuarioController {
 
 	private final UsuarioRepository repository = new UsuarioRepository();
 
+	private final PerfilRepository perfilRepository = new PerfilRepository();
+
+	private final UsuarioPerfilRepository usuarioPerfilRepository = new UsuarioPerfilRepository();
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response Cadastrar(UsuarioHttp usuarioHttp) {
 
-
 		Usuario usuario = new Usuario();
 		String message = "";
 
 		try {
-			
-			if(usuarioHttp.getSenha() != null) {
+
+			if (usuarioHttp.getSenha() != null) {
 				usuarioHttp.setSenha(Authentication.encodeSHA256(usuarioHttp.getSenha()));
 			}
 
@@ -49,20 +57,43 @@ public class UsuarioController {
 			usuario.setSenha(usuarioHttp.getSenha());
 			usuario.setTelefone(usuarioHttp.getTelefone());
 			
+			UsuarioPerfil newUsuarioPerfil = new UsuarioPerfil();
+			
+			Perfil perfil = perfilRepository.selecionarPorPerfil("GERAL");
+			if (perfil != null) {
+				newUsuarioPerfil.setEmail(usuarioHttp.getEmail());
+				newUsuarioPerfil.setPerfil(perfil.getPerfil());
+
+				ValidatorFactory factoryUsuarioPerfil = Validation.buildDefaultValidatorFactory();
+				Validator validatorUsuarioPerfil = factoryUsuarioPerfil.getValidator();
+				Set<ConstraintViolation<UsuarioPerfil>> violationsUsuarioPerfil = validatorUsuarioPerfil
+						.validate(newUsuarioPerfil);
+				for (ConstraintViolation<UsuarioPerfil> violation : violationsUsuarioPerfil) {
+					message += violation.getMessage() + "\n";
+				}
+				if (message != "") {
+					return Response.status(Response.Status.BAD_REQUEST)
+							.entity("Erro ao cadastrar o registro: \n" + message).build();
+				}
+			}
+
 			ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 			Validator validator = factory.getValidator();
 			Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 			for (ConstraintViolation<Usuario> violation : violations) {
-			    message += violation.getMessage() + "\n"; 
+				message += violation.getMessage() + "\n";
 			}
-			if(message != "") {
-				return Response.status(Response.Status.BAD_REQUEST).entity("Erro ao cadastrar o registro: \n" + message ).build();
+			if (message != "") {
+				return Response.status(Response.Status.BAD_REQUEST).entity("Erro ao cadastrar o registro: \n" + message)
+						.build();
 			}
-
+			
+			usuarioPerfilRepository.Salvar(newUsuarioPerfil);
 			repository.Salvar(usuario);
-			return Response.status(Response.Status.OK).entity("Registro cadastrado com sucesso" ).build();
+			return Response.status(Response.Status.OK).entity("Registro cadastrado com sucesso").build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao cadastrar o registro: " + e.getMessage() ).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity("Erro ao cadastrar o registro: " + e.getMessage()).build();
 		}
 	}
 
@@ -70,45 +101,47 @@ public class UsuarioController {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response Alterar(UsuarioHttp usuarioHttp) {
-		
+
 		String message = "";
 		Usuario usuario = new Usuario();
 
 		try {
-			
+
 			Usuario usuarioOld = repository.selecionarPorEmail(usuarioHttp.getEmail());
-			if(usuarioOld != null) {
-				
+			if (usuarioOld != null) {
+
 				usuario.setId(usuarioOld.getId());
 				usuario.setEmail(usuarioOld.getEmail());
 				String newPassword = Authentication.encodeSHA256(usuarioHttp.getSenha());
-				if(usuarioHttp.getSenha() != null && newPassword != usuarioOld.getSenha()) {
+				if (usuarioHttp.getSenha() != null && newPassword != usuarioOld.getSenha()) {
 					usuario.setSenha(newPassword);
-				}else {
+				} else {
 					usuario.setSenha(usuarioOld.getSenha());
 				}
-				
+
 				usuario.setNome(usuarioHttp.getNome());
 				usuario.setTelefone(usuarioHttp.getTelefone());
 				usuario.setDataCriacao(usuarioOld.getDataCriacao());
-				
+
 				ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 				Validator validator = factory.getValidator();
 				Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 				for (ConstraintViolation<Usuario> violation : violations) {
-				    message += violation.getMessage() + "\n"; 
+					message += violation.getMessage() + "\n";
 				}
-				if(message != "") {
-					return Response.status(Response.Status.BAD_REQUEST).entity("Erro ao alterar o registro: \n" + message ).build();
+				if (message != "") {
+					return Response.status(Response.Status.BAD_REQUEST)
+							.entity("Erro ao alterar o registro: \n" + message).build();
 				}
 
 				repository.Alterar(usuario);
-				return Response.status(Response.Status.OK).entity("Registro alterado com sucesso" ).build();
-			}else {
+				return Response.status(Response.Status.OK).entity("Registro alterado com sucesso").build();
+			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity("Erro ao alterar o registro").build();
 			}
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao alterar o registro: \n" + e.getMessage()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity("Erro ao alterar o registro: \n" + e.getMessage()).build();
 		}
 	}
 
@@ -120,8 +153,8 @@ public class UsuarioController {
 		List<UsuarioHttp> usuariosHttp = new ArrayList<UsuarioHttp>();
 		List<Usuario> usuarios = repository.selecionarTodos();
 		for (Usuario usuario : usuarios) {
-			usuariosHttp.add(new UsuarioHttp(usuario.getEmail(), usuario.getSenha(), usuario.getNome(),
-					usuario.getTelefone(), usuario.getDataCriacao(), usuario.getDataAtualizacao()));
+			usuariosHttp.add(
+					new UsuarioHttp(usuario.getEmail(), usuario.getSenha(), usuario.getNome(), usuario.getTelefone()));
 		}
 		return usuariosHttp;
 	}
@@ -133,12 +166,10 @@ public class UsuarioController {
 
 		Usuario usuario = repository.selecionarPorEmail(email);
 		if (usuario != null) {
-			return new UsuarioHttp(usuario.getEmail(), usuario.getSenha(), usuario.getNome(),
-					usuario.getTelefone(), usuario.getDataCriacao(), usuario.getDataAtualizacao());
+			return new UsuarioHttp(usuario.getEmail(), usuario.getSenha(), usuario.getNome(), usuario.getTelefone());
 		}
 		return null;
 	}
-
 
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
@@ -147,14 +178,16 @@ public class UsuarioController {
 
 		try {
 			Usuario usuario = repository.selecionarPorEmail(email);
-			if(usuario != null) {
+			if (usuario != null) {
 				repository.Excluir(usuario.getId());
-				return Response.status(Response.Status.OK).entity("Registro excluído com sucesso" ).build();
-			}else {
-				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao excluir o registro").build();
+				return Response.status(Response.Status.OK).entity("Registro excluído com sucesso").build();
+			} else {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao excluir o registro")
+						.build();
 			}
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao excluir o registro: \n" + e.getMessage()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity("Erro ao excluir o registro: \n" + e.getMessage()).build();
 		}
 	}
 

@@ -1,5 +1,6 @@
 package repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -16,7 +17,7 @@ public class TipoSolicitacaoRepository {
 	private EntityManager entityManager;
 
 	public TipoSolicitacaoRepository() {
-		
+
 		this.entityManagerFactory = Persistence.createEntityManagerFactory("AlertaRecifeApi");
 		this.entityManager = this.entityManagerFactory.createEntityManager();
 	}
@@ -36,12 +37,36 @@ public class TipoSolicitacaoRepository {
 	}
 
 	public List<TipoSolicitacao> selecionarTodos() {
-		TypedQuery<TipoSolicitacao> typedQuery = this.entityManager.createNamedQuery("TipoSolicitacao.selecionarTodos", TipoSolicitacao.class);
-		return typedQuery.getResultList();
+		
+		try {
+			TypedQuery<TipoSolicitacao> typedQuery = this.entityManager
+					.createNamedQuery("TipoSolicitacao.selecionarTodos", TipoSolicitacao.class);
+			return typedQuery.getResultList();
+		} catch (Exception e) {
+			List<TipoSolicitacao> tipos = new ArrayList<TipoSolicitacao>();
+			return tipos;
+		}
+	}
+
+	public TipoSolicitacao selecionarPorDescricao(String descricao) {
+		
+		try {
+			TypedQuery<TipoSolicitacao> typedQuery = this.entityManager
+					.createNamedQuery("TipoSolicitacao.selecionarPorDescricao", TipoSolicitacao.class);
+			typedQuery.setParameter("descricao", descricao);
+			return typedQuery.getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	public TipoSolicitacao selecionarPorId(Long id) {
-		return this.entityManager.find(TipoSolicitacao.class, id);
+		
+		try {
+			return this.entityManager.find(TipoSolicitacao.class, id);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	public void Excluir(Long id) {
@@ -51,6 +76,5 @@ public class TipoSolicitacaoRepository {
 		this.entityManager.getTransaction().begin();
 		this.entityManager.remove(tipo);
 		this.entityManager.getTransaction().commit();
-
 	}
 }
