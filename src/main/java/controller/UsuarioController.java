@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,10 +23,9 @@ import javax.validation.Validator;
 
 import entity.Perfil;
 import entity.Usuario;
-import entity.UsuarioPerfil;
 import http.UsuarioHttp;
+import http.UsuarioPerfilHttp;
 import repository.PerfilRepository;
-import repository.UsuarioPerfilRepository;
 import repository.UsuarioRepository;
 import util.Authentication;
 
@@ -35,8 +35,6 @@ public class UsuarioController {
 	private final UsuarioRepository repository = new UsuarioRepository();
 
 	private final PerfilRepository perfilRepository = new PerfilRepository();
-
-	private final UsuarioPerfilRepository usuarioPerfilRepository = new UsuarioPerfilRepository();
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -57,25 +55,14 @@ public class UsuarioController {
 			usuario.setSenha(usuarioHttp.getSenha());
 			usuario.setTelefone(usuarioHttp.getTelefone());
 			
-			UsuarioPerfil newUsuarioPerfil = new UsuarioPerfil();
+			Set<Perfil> perfilSet = new HashSet<>();
 			
 			Perfil perfil = perfilRepository.selecionarPorPerfil("GERAL");
 			if (perfil != null) {
-				newUsuarioPerfil.setEmail(usuarioHttp.getEmail());
-				newUsuarioPerfil.setPerfil(perfil.getPerfil());
-
-				ValidatorFactory factoryUsuarioPerfil = Validation.buildDefaultValidatorFactory();
-				Validator validatorUsuarioPerfil = factoryUsuarioPerfil.getValidator();
-				Set<ConstraintViolation<UsuarioPerfil>> violationsUsuarioPerfil = validatorUsuarioPerfil
-						.validate(newUsuarioPerfil);
-				for (ConstraintViolation<UsuarioPerfil> violation : violationsUsuarioPerfil) {
-					message += violation.getMessage() + "\n";
-				}
-				if (message != "") {
-					return Response.status(Response.Status.BAD_REQUEST)
-							.entity("Erro ao cadastrar o registro: \n" + message).build();
-				}
+				perfilSet.add(perfil);
 			}
+			
+			usuario.setPerfis(perfilSet);
 
 			ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 			Validator validator = factory.getValidator();
@@ -88,7 +75,6 @@ public class UsuarioController {
 						.build();
 			}
 			
-			usuarioPerfilRepository.Salvar(newUsuarioPerfil);
 			repository.Salvar(usuario);
 			return Response.status(Response.Status.OK).entity("Registro cadastrado com sucesso").build();
 		} catch (Exception e) {
@@ -144,6 +130,51 @@ public class UsuarioController {
 					.entity("Erro ao alterar o registro: \n" + e.getMessage()).build();
 		}
 	}
+	
+	@PUT
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/perfil")
+	public Response Alterar(UsuarioPerfilHttp usuarioPerfilHttp) {
+
+		String message = "";
+
+		try {
+
+			Usuario usuarioOld = repository.selecionarPorEmail(usuarioPerfilHttp.getEmail());
+			if (usuarioOld != null) {
+				
+				Set<Perfil> perfisNew = new HashSet<>();
+				for (String perfil : usuarioPerfilHttp.getPerfis() ) {
+					Perfil perfilOld = perfilRepository.selecionarPorPerfil(perfil);
+					if(perfilOld != null) {
+						perfisNew.add(perfilOld);
+					}
+				}
+				
+				usuarioOld.setPerfis(perfisNew);
+
+				ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+				Validator validator = factory.getValidator();
+				Set<ConstraintViolation<Usuario>> violations = validator.validate(usuarioOld);
+				for (ConstraintViolation<Usuario> violation : violations) {
+					message += violation.getMessage() + "\n";
+				}
+				if (message != "") {
+					return Response.status(Response.Status.BAD_REQUEST)
+							.entity("Erro ao alterar o registro: \n" + message).build();
+				}
+
+				repository.Alterar(usuarioOld);
+				return Response.status(Response.Status.OK).entity("Registro alterado com sucesso").build();
+			} else {
+				return Response.status(Response.Status.NOT_FOUND).entity("Erro ao alterar o registro").build();
+			}
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity("Erro ao alterar o registro: \n" + e.getMessage()).build();
+		}
+	}
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -167,6 +198,23 @@ public class UsuarioController {
 		Usuario usuario = repository.selecionarPorEmail(email);
 		if (usuario != null) {
 			return new UsuarioHttp(usuario.getEmail(), usuario.getSenha(), usuario.getNome(), usuario.getTelefone());
+		}
+		return null;
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/perfil/{email}")
+	public UsuarioPerfilHttp GetUsuarioPerfil(@PathParam("email") String email) {
+
+		Usuario usuario = repository.selecionarPorEmail(email);
+		if (usuario != null) {
+			
+			Set<String> perfisStr = new HashSet<>();
+			for (Perfil perfil : usuario.getPerfis() ) {
+				perfisStr.add(perfil.getPerfil());
+			}
+			return new UsuarioPerfilHttp(usuario.getEmail(), perfisStr);
 		}
 		return null;
 	}

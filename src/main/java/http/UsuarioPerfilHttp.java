@@ -1,24 +1,24 @@
 package http;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class UsuarioPerfilHttp {
-	
+
 	private String email;
-	
-	private String perfil;
-	
+
+	private Set<String> perfis;
+
 	public UsuarioPerfilHttp() {
-		super();
 	}
 
-	public UsuarioPerfilHttp(String email, String perfil) {
+	public UsuarioPerfilHttp(String email, Set<String> perfis) {
 		super();
 		this.email = email;
-		this.perfil = perfil;
+		this.perfis = perfis;
 	}
-	
+
 	public String getEmail() {
 		return email;
 	}
@@ -26,13 +26,13 @@ public class UsuarioPerfilHttp {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	public String getPerfil() {
-		return perfil;
+
+	public Set<String> getPerfis() {
+		return perfis;
 	}
 
-	public void setPerfil(String perfil) {
-		this.perfil = perfil;
+	public void setPerfis(Set<String> perfis) {
+		this.perfis = perfis;
 	}
-	
+
 }

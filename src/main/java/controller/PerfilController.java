@@ -19,18 +19,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import entity.Perfil;
-import entity.UsuarioPerfil;
 import http.PerfilHttp;
 import repository.PerfilRepository;
-import repository.UsuarioPerfilRepository;
 
 @Path("/perfil")
 public class PerfilController {
 	
 	private final PerfilRepository repository = new PerfilRepository();
 	
-	private final UsuarioPerfilRepository usuarioPerfilRepository = new UsuarioPerfilRepository();
-
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -94,11 +90,6 @@ public class PerfilController {
 			Perfil perfil = repository.selecionarPorId(id);
 			if(perfil != null) {
 				repository.Excluir(perfil.getId());
-
-				List<UsuarioPerfil> usuariosPerfil = usuarioPerfilRepository.selecionarPorPerfil(perfil.getPerfil());
-				for (UsuarioPerfil usuarioPerfil : usuariosPerfil) {
-					usuarioPerfilRepository.Excluir(usuarioPerfil.getId());
-				}
 				
 				return Response.status(Response.Status.OK).entity("Registro excluído com sucesso" ).build();				
 			}else {

@@ -1,12 +1,17 @@
 package entity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -21,7 +26,7 @@ import javax.validation.constraints.Size;
 @Table(name = "usuarios")
 @NamedQueries(value = { @NamedQuery(name = "Usuario.selecionarTodos", query = "SELECT u FROM Usuario u"),
 		@NamedQuery(name = "Usuario.selecionarPorEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email") })
-public class Usuario extends Entidade{
+public class Usuario extends Entidade {
 
 	@Email(message = "{usuario.email.invalido}")
 	@NotBlank(message = "{usuario.email.vazio}")
@@ -44,46 +49,52 @@ public class Usuario extends Entidade{
 	@Column(name = "telefone")
 	private String telefone;
 
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "usuario_perfil", joinColumns = @JoinColumn(name = "usuario"), inverseJoinColumns = @JoinColumn(name = "perfil"))
+	private Set<Perfil> perfis;
+
 	@Valid
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<PontoDeRisco> pontosDeRisco;
-	
+
 	@Valid
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<PontoDeApoio> pontosDeApoio;
-	
+
 	@Valid
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<Avaliacao> avaliacoes;
-	
+
 	@Valid
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<Solicitacao> solicitacoes;
-	
+
 	public Usuario() {
 		super();
-		this.pontosDeRisco = new ArrayList<>();
-		this.pontosDeApoio = new ArrayList<>();
-		this.avaliacoes = new ArrayList<>();
-		this.solicitacoes = new ArrayList<>();
-	}
-	
-	public Usuario(Long id) {
-		super(id);
+		this.perfis = new HashSet<>();
 		this.pontosDeRisco = new ArrayList<>();
 		this.pontosDeApoio = new ArrayList<>();
 		this.avaliacoes = new ArrayList<>();
 		this.solicitacoes = new ArrayList<>();
 	}
 
-	public Usuario(Long id, String email, String senha, String nome, String telefone,
-			List<PontoDeRisco> pontosDeRisco, List<PontoDeApoio> pontosDeApoio,
-			List<Avaliacao> avaliacoes, List<Solicitacao> solicitacoes) {
+	public Usuario(Long id) {
+		super(id);
+		this.perfis = new HashSet<>();
+		this.pontosDeRisco = new ArrayList<>();
+		this.pontosDeApoio = new ArrayList<>();
+		this.avaliacoes = new ArrayList<>();
+		this.solicitacoes = new ArrayList<>();
+	}
+
+	public Usuario(Long id, String email, String senha, String nome, String telefone, Set<Perfil> perfis, List<PontoDeRisco> pontosDeRisco,
+			List<PontoDeApoio> pontosDeApoio, List<Avaliacao> avaliacoes, List<Solicitacao> solicitacoes) {
 		super(id);
 		this.email = email;
 		this.senha = senha;
 		this.nome = nome;
 		this.telefone = telefone;
+		this.perfis = perfis;
 		this.pontosDeRisco = pontosDeRisco;
 		this.pontosDeApoio = pontosDeApoio;
 		this.avaliacoes = avaliacoes;
@@ -121,6 +132,14 @@ public class Usuario extends Entidade{
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
+	
+	public Set<Perfil> getPerfis() {
+		return perfis;
+	}
+
+	public void setPerfis(Set<Perfil> perfis) {
+		this.perfis = perfis;
+	}
 
 	public List<PontoDeRisco> getPontosDeRisco() {
 		return pontosDeRisco;
@@ -129,7 +148,7 @@ public class Usuario extends Entidade{
 	public void setPontosDeRisco(List<PontoDeRisco> pontosDeRisco) {
 		this.pontosDeRisco = pontosDeRisco;
 	}
-	
+
 	public List<PontoDeApoio> getPontosDeApoio() {
 		return pontosDeApoio;
 	}
@@ -137,7 +156,7 @@ public class Usuario extends Entidade{
 	public void setPontosDeApoio(List<PontoDeApoio> pontosDeApoio) {
 		this.pontosDeApoio = pontosDeApoio;
 	}
-	
+
 	public List<Avaliacao> getAvaliacoes() {
 		return avaliacoes;
 	}

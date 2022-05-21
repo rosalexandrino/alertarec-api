@@ -16,7 +16,6 @@ public class Arquivo extends Entidade{
 	@Column(name = "nome")
 	private String nome;
 	
-	@NotBlank(message = "{arquivo.arquivo.vazio}")
 	@Column(name = "arquivo", length = 1000000000)
 	private byte[] arquivo;
 

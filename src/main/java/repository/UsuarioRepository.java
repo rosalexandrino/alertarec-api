@@ -25,7 +25,7 @@ public class UsuarioRepository {
 	public void Salvar(Usuario usuario) {
 
 		this.entityManager.getTransaction().begin();
-		this.entityManager.persist(usuario);
+		this.entityManager.merge(usuario);
 		this.entityManager.getTransaction().commit();
 	}
 

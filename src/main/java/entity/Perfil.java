@@ -1,7 +1,11 @@
 package entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -20,18 +24,24 @@ public class Perfil extends Entidade {
 	@Pattern(regexp = "^[A-Za-z]+$", message = "{perfil.perfil.invalido}")
 	@Column(name = "perfil", length = 15, unique = true)
 	private String perfil;
+	
+    @ManyToMany(mappedBy = "perfis")
+    private Set<Usuario> usuarios;
 
 	public Perfil() {
 		super();
+		this.usuarios = new HashSet<>();
 	}
 
 	public Perfil(Long id) {
 		super(id);
+		this.usuarios = new HashSet<>();
 	}
 
-	public Perfil(Long id, String perfil) {
+	public Perfil(Long id, String perfil, Set<Usuario> usuarios) {
 		super(id);
 		this.perfil = perfil;
+		this.usuarios = usuarios;
 	}
 
 	public String getPerfil() {
@@ -40,5 +50,13 @@ public class Perfil extends Entidade {
 
 	public void setPerfil(String perfil) {
 		this.perfil = perfil;
+	}
+	
+	public Set<Usuario> getUsuarios() {
+		return usuarios;
+	}
+
+	public void setUsuarios(Set<Usuario> usuarios) {
+		this.usuarios = usuarios;
 	}
 }

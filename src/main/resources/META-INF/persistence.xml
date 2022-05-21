@@ -19,7 +19,6 @@
 		<class>entity.Arquivo</class>
 		<class>entity.Entidade</class>
 		<class>entity.Perfil</class>
-		<class>entity.UsuarioPerfil</class>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
 			<property name="hibernate.dialect"
